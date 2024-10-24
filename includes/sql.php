@@ -25,6 +25,23 @@ function search_items($search_term) {
   $sql .= "ORDER BY p.id ASC";
   return find_by_sql($sql);
 }
+function search_checkout_items($search_term) {
+  global $db;
+  $search_term = $db->escape($search_term);  // Ensure search term is escaped
+  $sql  = "SELECT p.id, p.name, p.description, p.status, p.where_found, p.checkin_by, ";
+  $sql .= "p.checkin_date, p.checkin_room, p.checkin_location, p.checkin_location_barcode, ";
+  $sql .= "p.checkin_item_barcode, p.comments, p.media_id, p.date, ";
+  $sql .= "c.checkout_by, c.checkout_date, c.quantity, c.due_back_date, c.comments, q.name AS categorie, ";
+  $sql .= "m.file_name AS image ";
+  $sql .= "FROM check_out c ";
+  $sql .= "LEFT JOIN products p ON c.item_id = p.id ";
+  $sql .= "LEFT JOIN categories q ON q.id = p.categorie_id ";
+  $sql .= "LEFT JOIN media m ON m.id = p.media_id ";
+  $sql .= "WHERE p.name LIKE '%{$search_term}%' OR c.checkout_by LIKE '%{$search_term}%' ";
+  $sql .= "ORDER BY p.id ASC";
+  
+  return find_by_sql($sql);
+}
 /*--------------------------------------------------------------*/
 /* Function for Perform queries
 /*--------------------------------------------------------------*/
@@ -233,6 +250,18 @@ function tableExists($table){
     return find_by_sql($sql);
 
    }
+   function join_checkout_table(){
+    global $db;
+    $sql  =" SELECT p.id,p.name,p.description,p.status,p.where_found,p.checkin_by,p.checkin_date,p.checkin_room,p.checkin_location,p.checkin_location_barcode,p.checkin_item_barcode,p.comments,p.media_id,p.date,c.checkout_by,c.checkout_date,c.quantity,c.due_back_date,c.comments,q.name";
+    $sql  .=" AS categorie,m.file_name AS image";
+    $sql  .=" FROM check_out c";
+    $sql  .=" LEFT JOIN products p ON c.item_id = p.id";
+    $sql  .=" LEFT JOIN categories q ON q.id = p.categorie_id";
+    $sql  .=" LEFT JOIN media m ON m.id = p.media_id";
+    $sql  .=" ORDER BY p.id ASC";
+    return find_by_sql($sql);
+
+  }
   /*--------------------------------------------------------------*/
   /* Function for Finding all product name
   /* Request coming from ajax.php for auto suggest

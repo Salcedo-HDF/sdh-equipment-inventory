@@ -21,10 +21,10 @@
     <div class="col-md-12">
       <div class="panel panel-default">
         <div class="panel-heading clearfix">
-         <form action="item.php" method="GET" class="form-inline pull-left">
+         <form action="check_out.php" method="GET" class="form-inline pull-left">
             <input type="text" name="search" class="form-control" placeholder="Search item...">
             <button type="submit" class="btn btn-primary">Search</button>
-            <a href="item.php" class="btn btn-danger">Reset</a>
+            <a href="check_out.php" class="btn btn-danger">Reset</a>
         </form>
         </div>
         <div class="panel-body">
@@ -137,7 +137,7 @@
             </div>
             <div class="form-group">
               <label>Due Back Date:</label>
-              <input type="date" class="form-control" name="due-back-date" required>
+              <input type="date" class="form-control" name="due-back-date">
             </div>
             <div class="form-group">
               <label>Comments:</label>
