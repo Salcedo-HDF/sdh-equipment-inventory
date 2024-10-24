@@ -39,7 +39,7 @@ function find_by_sql($sql)
 /*  Function for Find data from table by id
 /*--------------------------------------------------------------*/
 function find_by_id($table,$id)
-{
+{    
   global $db;
   $id = (int)$id;
     if(tableExists($table)){
