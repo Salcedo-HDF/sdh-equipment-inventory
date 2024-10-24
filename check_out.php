@@ -1,143 +1,100 @@
 <?php
-  $page_title = 'Check Out Item';
+  $page_title = 'All Items';
   require_once('includes/load.php');
   // Checkin What level user has permission to view this page
-  page_require_level(2);
-  $all_categories = find_all('categories');
-  $all_items = find_all('products');
-  $all_photo = find_all('media');
-?>  
-<?php
- if(isset($_POST['check_out'])){
-   $req_fields = array('product-title','product-categorie','product-quantity','buying-price', 'saleing-price' );
-   validate_fields($req_fields);
-   if(empty($errors)){
-     $p_name  = remove_junk($db->escape($_POST['product-title']));
-     $p_cat   = remove_junk($db->escape($_POST['product-categorie']));
-     $p_qty   = remove_junk($db->escape($_POST['product-quantity']));
-     $p_buy   = remove_junk($db->escape($_POST['buying-price']));
-     $p_sale  = remove_junk($db->escape($_POST['saleing-price']));
-     if (is_null($_POST['product-photo']) || $_POST['product-photo'] === "") {
-       $media_id = '0';
-     } else {
-       $media_id = remove_junk($db->escape($_POST['product-photo']));
-     }
-     $date    = make_date();
-     $query  = "INSERT INTO products (";
-     $query .=" name,quantity,buy_price,sale_price,categorie_id,media_id,date";
-     $query .=") VALUES (";
-     $query .=" '{$p_name}', '{$p_qty}', '{$p_buy}', '{$p_sale}', '{$p_cat}', '{$media_id}', '{$date}'";
-     $query .=")";
-     $query .=" ON DUPLICATE KEY UPDATE name='{$p_name}'";
-     if($db->query($query)){
-       $session->msg('s',"Product added ");
-       redirect('check_out.php', false);
-     } else {
-       $session->msg('d',' Sorry failed to added!');
-       redirect('product.php', false);
-     }
+   page_require_level(2);
 
-   } else{
-     $session->msg("d", $errors);
-     redirect('check_out.php',false);
-   }
-
- }
-
+   // Check if there's a search query
+  $search_query = '';
+  if (isset($_GET['search'])) {
+      $search_query = $_GET['search'];
+      $products = search_items($search_query);
+  } else {
+      $products = join_product_table();
+  }
 ?>
 <?php include_once('layouts/header.php'); ?>
-<div class="row">
-  <div class="col-md-12">
-    <?php echo display_msg($msg); ?>
-  </div>
-</div>
   <div class="row">
-  <div class="col-md-12">
+     <div class="col-md-12">
+       <?php echo display_msg($msg); ?>
+     </div>
+    <div class="col-md-12">
       <div class="panel panel-default">
-        <div class="panel-heading">
-          <strong>
-            <span class="glyphicon glyphicon-th"></span>
-            <span>Check Out Item</span>
-         </strong>
+        <div class="panel-heading clearfix">
+         <form action="item.php" method="GET" class="form-inline pull-left">
+            <input type="text" name="search" class="form-control" placeholder="Search item...">
+            <button type="submit" class="btn btn-primary">Search</button>
+            <a href="item.php" class="btn btn-danger">Reset</a>
+        </form>
         </div>
         <div class="panel-body">
-         <div class="col-md-12">
-          <form method="post" action="check_out.php" class="clearfix">
-              <div class="form-group">
-                <div class="input-group">
-                  <span class="input-group-addon">
-                   <i class="glyphicon glyphicon-th-large"></i>
-                  </span>
-                    <select class="form-control" name="product-categorie">
-                      <option value="">Select Item</option>
-                    <?php  foreach ($all_items as $cat): ?>
-                      <option value="<?php echo (int)$cat['id'] ?>">
-                        <?php echo $cat['name'] ?></option>
-                    <?php endforeach; ?>
-                    </select>
-               </div>
-              </div>
-              <div class="form-group">
-                <div class="row">
-                  <div class="col-md-6">
-                    <select class="form-control" name="product-categorie">
-                      <option value="">Select Product Category</option>
-                    <?php  foreach ($all_categories as $cat): ?>
-                      <option value="<?php echo (int)$cat['id'] ?>">
-                        <?php echo $cat['name'] ?></option>
-                    <?php endforeach; ?>
-                    </select>
-                  </div>
-                  <div class="col-md-6">
-                    <select class="form-control" name="product-photo">
-                      <option value="">Select Product Photo</option>
-                    <?php  foreach ($all_photo as $photo): ?>
-                      <option value="<?php echo (int)$photo['id'] ?>">
-                        <?php echo $photo['file_name'] ?></option>
-                    <?php endforeach; ?>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-group">
-               <div class="row">
-                 <div class="col-md-4">
-                   <div class="input-group">
-                     <span class="input-group-addon">
-                      <i class="glyphicon glyphicon-shopping-cart"></i>
-                     </span>
-                     <input type="number" class="form-control" name="product-quantity" placeholder="Product Quantity">
-                  </div>
-                 </div>
-                 <div class="col-md-4">
-                   <div class="input-group">
-                     <span class="input-group-addon">
-                       <i class="glyphicon glyphicon-usd"></i>
-                     </span>
-                     <input type="number" class="form-control" name="buying-price" placeholder="Buying Price">
-                     <span class="input-group-addon">.00</span>
-                  </div>
-                 </div>
-                  <div class="col-md-4">
-                    <div class="input-group">
-                      <span class="input-group-addon">
-                        <i class="glyphicon glyphicon-usd"></i>
-                      </span>
-                      <input type="number" class="form-control" name="saleing-price" placeholder="Selling Price">
-                      <span class="input-group-addon">.00</span>
-                   </div>
-                  </div>
-               </div>
-              </div>
-              <button type="submit" name="check_out" class="btn btn-danger">Add product</button>
-          </form>
-         </div>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th class="text-center" style="width: 50px;">#</th>
+                <th class="text-center"> Photo</th>
+                <th class="text-center"> Item Name </th>
+                <th class="text-center"> Category </th>
+                <th class="text-center"> Number of Items </th>
+                <th class="text-center"> Description </th>
+                <th class="text-center"> Works/Don't Work </th>
+                <th class="text-center"> Where Found </th>
+                <th class="text-center"> Checkin By </th>
+                <th class="text-center"> Chek in Date </th>
+                <th class="text-center"> Check in Room </th>
+                <th class="text-center"> Check in Location </th>
+                <th class="text-center"> Check in Location Barcode </th>
+                <th class="text-center"> Check in item Barcode </th>
+                <th class="text-center"> Actions </th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php if (empty($products)): ?>
+                  <tr>
+                      <td colspan="15" class="text-center btn-danger">No items found</td>
+                  </tr>
+              <?php else: ?>
+                <?php foreach ($products as $product):?>
+                <tr>
+                  <td class="text-center"><?php echo count_id();?></td>
+                  <td>
+                    <?php if($product['media_id'] === '0'): ?>
+                      <img class="img-avatar img-circle" src="uploads/products/no_image.png" alt="">
+                    <?php else: ?>
+                    <img class="img-avatar img-circle" src="uploads/products/<?php echo $product['image']; ?>" alt="">
+                  <?php endif; ?>
+                  </td>
+                  <td> <?php echo remove_junk($product['name']); ?></td>
+                  <td class="text-center"> <?php echo remove_junk($product['categorie']); ?></td>
+                  <td class="text-center"> <?php echo remove_junk($product['quantity']); ?></td>
+                  <td class="text-center"> <?php echo remove_junk($product['description']); ?></td>
+                  <td class="text-center"> <?php echo remove_junk($product['status']); ?></td>
+                  <td class="text-center"> <?php echo remove_junk($product['where_found']); ?></td>
+                  <td class="text-center"> <?php echo remove_junk($product['checkin_by']); ?></td>
+                  <td class="text-center"> <?php echo remove_junk($product['checkin_date']); ?></td>
+                  <td class="text-center"> <?php echo remove_junk($product['checkin_room']); ?></td>
+                  <td class="text-center"> <?php echo remove_junk($product['checkin_location']); ?></td>
+                  <td class="text-center"> <?php echo remove_junk($product['checkin_location_barcode']); ?></td>
+                  <td class="text-center"> <?php echo remove_junk($product['checkin_item_barcode']); ?></td>
+                  <td class="text-center">
+                    <div class="btn-group">
+                      <a href="edit_product.php?id=<?php echo (int)$product['id'];?>" class="btn btn-info btn-xs"  title="Edit" data-toggle="tooltip">
+                        <span class="glyphicon glyphicon-edit"></span>
+                      </a>
+                      <a href="delete_product.php?id=<?php echo (int)$product['id'];?>" class="btn btn-danger btn-xs"  title="Delete" data-toggle="tooltip">
+                        <span class="glyphicon glyphicon-trash"></span>
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+             <?php endif; ?>
+            </tbody>
+          </tabel>
         </div>
       </div>
     </div>
   </div>
-
 <?php include_once('layouts/footer.php'); ?>
 
 <!--

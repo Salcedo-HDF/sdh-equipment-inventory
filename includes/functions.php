@@ -26,19 +26,19 @@ function first_character($str){
   $val = ucfirst($val);
   return $val;
 }
-/*--------------------------------------------------------------*/
-/* Function for Checking input fields not empty
-/*--------------------------------------------------------------*/
-function validate_fields($var){
-  global $errors;
-  foreach ($var as $field) {
-    $val = remove_junk($_POST[$field]);
-    if(isset($val) && $val==''){
-      $errors = $field ." can't be blank.";
-      return $errors;
-    }
-  }
-}
+// /*--------------------------------------------------------------*/
+// /* Function for Checking input fields not empty
+// /*--------------------------------------------------------------*/
+// function validate_fields($var){
+//   global $errors;
+//   foreach ($var as $field) {
+//     $val = remove_junk($_POST[$field]);
+//     if(isset($val) && $val==''){
+//       $errors = $field ." can't be blank.";
+//       return $errors;
+//     }
+//   }
+// }
 /*--------------------------------------------------------------*/
 /* Function for Display Session Message
    Ex echo displayt_msg($message);

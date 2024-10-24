@@ -1,7 +1,7 @@
 <?php include_once('includes/load.php'); ?>
 <?php
 $req_fields = array('username','password' );
-validate_fields($req_fields);
+// validate_fields($req_fields);
 $username = remove_junk($_POST['username']);
 $password = remove_junk($_POST['password']);
 
@@ -12,7 +12,7 @@ if(empty($errors)){
      $session->login($user_id);
     //Update Sign in time
      updateLastLogIn($user_id);
-     $session->msg("s", "Welcome to Inventory Management System");
+     $session->msg("s", "Welcome to SDH Equpment Inventory System");
      redirect('admin.php',false);
 
   } else {

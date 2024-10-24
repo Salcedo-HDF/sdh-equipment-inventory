@@ -39,12 +39,12 @@ if(!$product){
                  redirect('product.php', false);
                } else {
                  $session->msg('d',' Sorry failed to updated!');
-                 redirect('edit_product.php?id='.$product['id'], false);
+                 redirect('edit_item.php?id='.$product['id'], false);
                }
 
    } else{
        $session->msg("d", $errors);
-       redirect('edit_product.php?id='.$product['id'], false);
+       redirect('edit_item.php?id='.$product['id'], false);
    }
 
  }
@@ -66,7 +66,7 @@ if(!$product){
         </div>
         <div class="panel-body">
          <div class="col-md-7">
-           <form method="post" action="edit_product.php?id=<?php echo (int)$product['id'] ?>">
+           <form method="post" action="edit_item.php?id=<?php echo (int)$product['id'] ?>">
               <div class="form-group">
                 <div class="input-group">
                   <span class="input-group-addon">

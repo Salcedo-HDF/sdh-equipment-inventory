@@ -39,7 +39,7 @@
       <div class="col-md-4">
         <div class="panel clearfix">
           <div class="panel-icon pull-left bg-red">
-            <i class="glyphicon glyphicon-th-large"></i>
+            <i class="glyphicon glyphicon-tags"></i>
           </div>
           <div class="panel-value pull-right">
             <h2 class="margin-top"> <?php  echo $c_categorie['total']; ?> </h2>
@@ -53,7 +53,7 @@
       <div class="col-md-4">
         <div class="panel clearfix">
           <div class="panel-icon pull-left bg-blue2">
-            <i class="glyphicon glyphicon-shopping-cart"></i>
+            <i class="glyphicon glyphicon-briefcase"></i>
           </div>
           <div class="panel-value pull-right">
             <h2 class="margin-top"> <?php  echo $c_product['total']; ?> </h2>
@@ -73,7 +73,7 @@
       <div class="panel-heading">
         <strong>
           <span class="glyphicon glyphicon-th"></span>
-          <span>Recently Added Items</span>
+          <span>Recently Check In Items</span>
         </strong>
       </div>
       <div class="panel-body">

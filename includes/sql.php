@@ -11,6 +11,20 @@ function find_all($table) {
      return find_by_sql("SELECT * FROM ".$db->escape($table));
    }
 }
+function search_items($search_term) {
+  global $db;
+  $search_term = $db->escape($search_term);
+  $sql  = "SELECT p.id, p.name, p.quantity, p.description, p.status, p.where_found, ";
+  $sql .= "p.checkin_by, p.checkin_date, p.checkin_room, p.checkin_location, ";
+  $sql .= "p.checkin_location_barcode, p.checkin_item_barcode, p.media_id, c.name AS categorie, ";
+  $sql .= "m.file_name AS image ";
+  $sql .= "FROM products p ";
+  $sql .= "LEFT JOIN categories c ON c.id = p.categorie_id ";
+  $sql .= "LEFT JOIN media m ON m.id = p.media_id ";
+  $sql .= "WHERE p.name LIKE '%$search_term%' OR p.description LIKE '%$search_term%' ";
+  $sql .= "ORDER BY p.id ASC";
+  return find_by_sql($sql);
+}
 /*--------------------------------------------------------------*/
 /* Function for Perform queries
 /*--------------------------------------------------------------*/
@@ -210,7 +224,7 @@ function tableExists($table){
    /*--------------------------------------------------------------*/
   function join_product_table(){
      global $db;
-     $sql  =" SELECT p.id,p.name,p.quantity,p.buy_price,p.sale_price,p.media_id,p.date,c.name";
+     $sql  =" SELECT p.id,p.name,p.quantity,p.description,p.status,p.where_found,p.checkin_by,p.checkin_date,p.checkin_room,p.checkin_location,p.checkin_location_barcode,p.checkin_item_barcode,p.comments,p.media_id,p.date,c.name";
     $sql  .=" AS categorie,m.file_name AS image";
     $sql  .=" FROM products p";
     $sql  .=" LEFT JOIN categories c ON c.id = p.categorie_id";
@@ -261,7 +275,7 @@ function tableExists($table){
   /*--------------------------------------------------------------*/
  function find_recent_product_added($limit){
    global $db;
-   $sql   = " SELECT p.id,p.name,p.sale_price,p.media_id,c.name AS categorie,";
+   $sql   = " SELECT p.id,p.name,p.media_id,c.name AS categorie,";
    $sql  .= "m.file_name AS image FROM products p";
    $sql  .= " LEFT JOIN categories c ON c.id = p.categorie_id";
    $sql  .= " LEFT JOIN media m ON m.id = p.media_id";
@@ -309,7 +323,7 @@ function find_sale_by_dates($start_date,$end_date){
   global $db;
   $start_date  = date("Y-m-d", strtotime($start_date));
   $end_date    = date("Y-m-d", strtotime($end_date));
-  $sql  = "SELECT s.date, p.name,p.sale_price,p.buy_price,";
+  $sql  = "SELECT s.date, p.name,";
   $sql .= "COUNT(s.product_id) AS total_records,";
   $sql .= "SUM(s.qty) AS total_sales,";
   $sql .= "SUM(p.sale_price * s.qty) AS total_saleing_price,";
