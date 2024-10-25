@@ -14,14 +14,15 @@ function find_all($table) {
 function search_items($search_term) {
   global $db;
   $search_term = $db->escape($search_term);
-  $sql  = "SELECT p.id, p.name, p.quantity, p.description, p.status, p.where_found, ";
+  $sql  = "SELECT p.id, p.name, p.quantity, p.description,p.status, p.action, p.where_found, ";
   $sql .= "p.checkin_by, p.checkin_date, p.checkin_room, p.checkin_location, ";
   $sql .= "p.checkin_location_barcode, p.checkin_item_barcode, p.media_id, c.name AS categorie, ";
   $sql .= "m.file_name AS image ";
   $sql .= "FROM products p ";
   $sql .= "LEFT JOIN categories c ON c.id = p.categorie_id ";
   $sql .= "LEFT JOIN media m ON m.id = p.media_id ";
-  $sql .= "WHERE p.name LIKE '%$search_term%' OR p.description LIKE '%$search_term%' ";
+  $sql .= "WHERE (p.name LIKE '%$search_term%' OR p.description LIKE '%$search_term%') ";
+  $sql .= "AND p.action = 'Check In' "; // Condition to only search items with action 'Check In'
   $sql .= "ORDER BY p.id ASC";
   return find_by_sql($sql);
 }
@@ -240,12 +241,13 @@ function tableExists($table){
    /* JOIN with categorie  and media database table
    /*--------------------------------------------------------------*/
   function join_product_table(){
-     global $db;
-     $sql  =" SELECT p.id,p.name,p.quantity,p.description,p.status,p.where_found,p.checkin_by,p.checkin_date,p.checkin_room,p.checkin_location,p.checkin_location_barcode,p.checkin_item_barcode,p.comments,p.media_id,p.date,c.name";
+    global $db;
+    $sql  =" SELECT p.id,p.name,p.quantity,p.description,p.status,p.where_found,p.checkin_by,p.checkin_date,p.checkin_room,p.checkin_location,p.checkin_location_barcode,p.checkin_item_barcode,p.comments,p.media_id,p.date,c.name";
     $sql  .=" AS categorie,m.file_name AS image";
     $sql  .=" FROM products p";
     $sql  .=" LEFT JOIN categories c ON c.id = p.categorie_id";
     $sql  .=" LEFT JOIN media m ON m.id = p.media_id";
+    $sql .= " WHERE p.action = 'Check In'";
     $sql  .=" ORDER BY p.id ASC";
     return find_by_sql($sql);
 

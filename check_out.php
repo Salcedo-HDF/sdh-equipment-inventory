@@ -3,7 +3,7 @@
   require_once('includes/load.php');
   // Checkin What level user has permission to view this page
    page_require_level(2);
-
+  
    // Check if there's a search query
   $search_query = '';
   if (isset($_GET['search'])) {

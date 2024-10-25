@@ -42,7 +42,7 @@
                 <th class="text-center"> Check Out By </th>
                 <th class="text-center"> Chek Out Date </th>
                 <th class="text-center"> Comments </th>
-                <th class="text-center"> Actions </th>
+                <th class="text-center"> Actions (Check In/Delete) </th>
               </tr>
             </thead>
             <tbody>
@@ -72,9 +72,9 @@
                   <td class="text-center"> <?php echo remove_junk($product['comments']); ?></td>
                   <td class="text-center">
                     <div class="btn-group">
-                      <a href="edit_checkout_item.php?id=<?php echo (int)$product['id'];?>" class="btn btn-info btn-xs"  title="Edit" data-toggle="tooltip">
-                        <span class="glyphicon glyphicon-edit"></span>
-                      </a>
+                      <a href="checkin_item.php?id=<?php echo (int)$product['id'];?>" class="btn btn-info btn-xs"  title="Check In" data-toggle="tooltip">
+                        <span class="glyphicon glyphicon-log-in"></span>
+                      </a><br>
                       <a href="delete_item.php?id=<?php echo (int)$product['id'];?>" class="btn btn-danger btn-xs"  title="Delete" data-toggle="tooltip">
                         <span class="glyphicon glyphicon-trash"></span>
                       </a>
