@@ -7,12 +7,12 @@
   </li>
   <li>
     <a href="#" class="submenu-toggle">
-      <i class="glyphicon glyphicon-th-large"></i>
-      <span>Items</span>
+      <i class="glyphicon glyphicon-list"></i>
+      <span>Check In</span>
     </a>
     <ul class="nav submenu">
-       <li><a href="item.php">Manage Items</a> </li>
-       <li><a href="check_in.php">Check In Items</a> </li>
+       <li><a href="item.php">Check In Items</a> </li>
+       <li><a href="check_in.php">Check In an Item</a> </li>
    </ul>
   </li>
   <li>
