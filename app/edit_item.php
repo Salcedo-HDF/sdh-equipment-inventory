@@ -1,53 +1,102 @@
 <?php
-  $page_title = 'Edit product';
+  $page_title = 'Edit item';
   require_once('includes/load.php');
   // Checkin What level user has permission to view this page
    page_require_level(2);
 ?>
 <?php
-$product = find_by_id('products',(int)$_GET['id']);
+$item = find_by_id('products',(int)$_GET['id']);
 $all_categories = find_all('categories');
 $all_photo = find_all('media');
-if(!$product){
-  $session->msg("d","Missing product id.");
-  redirect('product.php');
+if(!$item){
+  $session->msg("d","Missing item id.");
+  redirect('item.php');
 }
 ?>
 <?php
- if(isset($_POST['product'])){
-    $req_fields = array('product-title','product-categorie','product-quantity','buying-price', 'saleing-price' );
-    validate_fields($req_fields);
+  if (isset($_POST['item'])) {
+    // Getting the values from the form submission
+    $p_name = isset($_POST['item-title']) ? remove_junk($db->escape($_POST['item-title'])) : '';
+    $p_cat = isset($_POST['item-categorie']) ? (int)$_POST['item-categorie'] : null;
+    $p_qty = isset($_POST['item-quantity']) ? remove_junk($db->escape($_POST['item-quantity'])) : null;
+    $p_description = isset($_POST['item-description']) ? remove_junk($db->escape($_POST['item-description'])) : null;
+    $i_status = isset($_POST['item-status']) ? remove_junk($db->escape($_POST['item-status'])) : null;
+    $i_where_found = isset($_POST['where-found']) ? remove_junk($db->escape($_POST['where-found'])) : null;
+    $i_checkin_by = isset($_POST['checkin-by']) ? remove_junk($db->escape($_POST['checkin-by'])) : null;
+    $i_checkin_date = isset($_POST['checkin-date']) ? remove_junk($db->escape($_POST['checkin-date'])) : null;
+    $i_checkin_room = isset($_POST['checkin-room']) ? remove_junk($db->escape($_POST['checkin-room'])) : null;
+    $i_checkin_location = isset($_POST['checkin-location']) ? remove_junk($db->escape($_POST['checkin-location'])) : null;
+    $i_checkin_location_barcode = isset($_POST['checkin-location-barcode']) ? remove_junk($db->escape($_POST['checkin-location-barcode'])) : null;
+    $i_comments = isset($_POST['comments']) ? remove_junk($db->escape($_POST['comments'])) : null;
+    $i_checkin_item_barcode = isset($_POST['checkin-item-barcode']) ? remove_junk($db->escape($_POST['checkin-item-barcode'])) : null;
+    
+    // Prepare the base query
+    $query = "UPDATE products SET name ='{$p_name}'";
 
-   if(empty($errors)){
-       $p_name  = remove_junk($db->escape($_POST['product-title']));
-       $p_cat   = (int)$_POST['product-categorie'];
-       $p_qty   = remove_junk($db->escape($_POST['product-quantity']));
-       $p_buy   = remove_junk($db->escape($_POST['buying-price']));
-       $p_sale  = remove_junk($db->escape($_POST['saleing-price']));
-       if (is_null($_POST['product-photo']) || $_POST['product-photo'] === "") {
-         $media_id = '0';
-       } else {
-         $media_id = remove_junk($db->escape($_POST['product-photo']));
-       }
-       $query   = "UPDATE products SET";
-       $query  .=" name ='{$p_name}', quantity ='{$p_qty}',";
-       $query  .=" buy_price ='{$p_buy}', sale_price ='{$p_sale}', categorie_id ='{$p_cat}',media_id='{$media_id}'";
-       $query  .=" WHERE id ='{$product['id']}'";
-       $result = $db->query($query);
-               if($result && $db->affected_rows() === 1){
-                 $session->msg('s',"Product updated ");
-                 redirect('product.php', false);
-               } else {
-                 $session->msg('d',' Sorry failed to updated!');
-                 redirect('edit_item.php?id='.$product['id'], false);
-               }
+    // Append fields if they are not null
+    if (!is_null($p_qty)) {
+        $query .= ", quantity ='{$p_qty}'";
+    }
+    if (!is_null($p_description)) {
+        $query .= ", description ='{$p_description}'";
+    }
+    if (!is_null($p_cat)) {
+        $query .= ", categorie_id ='{$p_cat}'";
+    }
+    if (!is_null($i_status)) {
+        $query .= ", status ='{$i_status}'";
+    }
+    
+    if (!is_null($i_where_found)) {
+        $query .= ", where_found ='{$i_where_found}'";
+    }
+    
+    if (!is_null($i_checkin_by)) {
+        $query .= ", checkin_by ='{$i_checkin_by}'";
+    }
+    
+    if (!is_null($i_checkin_date)) {
+        $query .= ", checkin_date ='{$i_checkin_date}'";
+    }
+    
+    if (!is_null($i_checkin_room)) {
+        $query .= ", checkin_room ='{$i_checkin_room}'";
+    }
+    
+    if (!is_null($i_checkin_location)) {
+        $query .= ", checkin_location ='{$i_checkin_location}'";
+    }
+    
+    if (!is_null($i_checkin_location_barcode)) {
+        $query .= ", checkin_location_barcode ='{$i_checkin_location_barcode}'";
+    }
+    
+    if (!is_null($i_comments)) {
+        $query .= ", comments ='{$i_comments}'";
+    }
+    
+    if (!is_null($i_checkin_item_barcode)) {
+        $query .= ", checkin_item_barcode ='{$i_checkin_item_barcode}'";
+    }
+    
+    // Media ID handling
+    $media_id = (is_null($_POST['item-photo']) || $_POST['item-photo'] === "") ? '0' : remove_junk($db->escape($_POST['item-photo']));
+    $query .= ", media_id='{$media_id}'";
+    
+    // Finish the query
+    $query .= " WHERE id ='{$item['id']}'";
 
-   } else{
-       $session->msg("d", $errors);
-       redirect('edit_item.php?id='.$product['id'], false);
-   }
-
- }
+    // Execute the query
+    $result = $db->query($query);
+    
+    if ($result && $db->affected_rows() === 1) {
+        $session->msg('s', "Item updated");
+        redirect('item.php', false);
+    } else {
+        $session->msg('d', 'Sorry, failed to update!');
+        redirect('edit_item.php?id=' . $item['id'], false);
+    }
+}
 
 ?>
 <?php include_once('layouts/header.php'); ?>
@@ -66,34 +115,34 @@ if(!$product){
         </div>
         <div class="panel-body">
          <div class="col-md-12">
-           <form method="post" action="edit_item.php?id=<?php echo (int)$product['id'] ?>">
+           <form method="post" action="edit_item.php?id=<?php echo (int)$item['id'] ?>">
               <div class="form-group">
                 <label for="item-name">Item Name</label>
                 <div class="input-group">
                   <span class="input-group-addon">
                    <i class="glyphicon glyphicon-th-large"></i>
                   </span>
-                  <input type="text" class="form-control" name="product-title" value="<?php echo remove_junk($product['name']);?>">
+                  <input type="text" class="form-control" name="item-title" value="<?php echo remove_junk($item['name']);?>">
                </div>
               </div>
               <div class="form-group">
                 <div class="row">
                   <div class="col-md-4">
                     <label for="item-category">Category</label>
-                    <select class="form-control" name="product-categorie">
+                    <select class="form-control" name="item-categorie">
                     <option value=""> Select a categorie</option>
                    <?php  foreach ($all_categories as $cat): ?>
-                     <option value="<?php echo (int)$cat['id']; ?>" <?php if($product['categorie_id'] === $cat['id']): echo "selected"; endif; ?> >
+                     <option value="<?php echo (int)$cat['id']; ?>" <?php if($item['categorie_id'] === $cat['id']): echo "selected"; endif; ?> >
                        <?php echo remove_junk($cat['name']); ?></option>
                    <?php endforeach; ?>
                  </select>
                   </div>
                   <div class="col-md-4">
                     <label for="item-photo">Item Photo</label>
-                    <select class="form-control" name="product-photo">
+                    <select class="form-control" name="item-photo">
                       <option value=""> No image</option>
                       <?php  foreach ($all_photo as $photo): ?>
-                        <option value="<?php echo (int)$photo['id'];?>" <?php if($product['media_id'] === $photo['id']): echo "selected"; endif; ?> >
+                        <option value="<?php echo (int)$photo['id'];?>" <?php if($item['media_id'] === $photo['id']): echo "selected"; endif; ?> >
                           <?php echo $photo['file_name'] ?></option>
                       <?php endforeach; ?>
                     </select>
@@ -104,7 +153,7 @@ if(!$product){
                      <span class="input-group-addon">
                       <i class="glyphicon glyphicon-list"></i>
                      </span>
-                     <input type="number" class="form-control" name="item-quantity" placeholder="Item Quantity" value="<?php echo remove_junk($product['quantity']); ?>">
+                     <input type="number" class="form-control" name="item-quantity" placeholder="Item Quantity" value="<?php echo remove_junk($item['quantity']); ?>">
                   </div>
                  </div>
       
@@ -119,7 +168,7 @@ if(!$product){
                      <span class="input-group-addon">
                       <i class="glyphicon glyphicon-file"></i>
                      </span>
-                     <textarea class="form-control" name="item-description" placeholder="Item Description" rows="3"><?php echo remove_junk($product['description']); ?></textarea>
+                     <textarea class="form-control" name="item-description" placeholder="Item Description" rows="3"><?php echo remove_junk($item['description']); ?></textarea>
                   </div>
                  </div>
                </div>
@@ -136,10 +185,10 @@ if(!$product){
                       </span>
                       <select class="form-control" name="item-status">
                         <option value="">Select Status</option>
-                        <option value="Works" <?php if($product['status'] === 'Works'): echo "selected"; endif; ?>>Works</option>
-                        <option value="Don't Work" <?php if($product['status'] === "Don't Work"): echo "selected"; endif; ?>>Don't Work</option>
-                        <option value="N/A" <?php if($product['status'] === 'N/A'): echo "selected"; endif; ?>>N/A</option>
-                        <option value="?" <?php if($product['status'] === '?'): echo "selected"; endif; ?>>?</option>
+                        <option value="Works" <?php if($item['status'] === 'Works'): echo "selected"; endif; ?>>Works</option>
+                        <option value="Don't Work" <?php if($item['status'] === "Don't Work"): echo "selected"; endif; ?>>Don't Work</option>
+                        <option value="N/A" <?php if($item['status'] === 'N/A'): echo "selected"; endif; ?>>N/A</option>
+                        <option value="?" <?php if($item['status'] === '?'): echo "selected"; endif; ?>>?</option>
                       </select>
                     </div>
                   </div>
@@ -150,7 +199,7 @@ if(!$product){
                       <span class="input-group-addon">
                       <i class="glyphicon glyphicon-map-marker"></i>
                       </span>
-                      <input type="text" class="form-control" name="where-found" value="<?php echo remove_junk($product['where_found']); ?>" placeholder="Where Found?">
+                      <input type="text" class="form-control" name="where-found" value="<?php echo remove_junk($item['where_found']); ?>" placeholder="Where Found?">
                     </div>
                   </div>
 
@@ -160,7 +209,7 @@ if(!$product){
                       <span class="input-group-addon">
                       <i class="glyphicon glyphicon-user"></i>
                       </span>
-                      <input type="text" class="form-control" name="checkin-by" value="<?php echo remove_junk($product['checkin_by']); ?>" placeholder="Checked In By">
+                      <input type="text" class="form-control" name="checkin-by" value="<?php echo remove_junk($item['checkin_by']); ?>" placeholder="Checked In By">
                     </div>
                   </div>
 
@@ -176,7 +225,7 @@ if(!$product){
                     <span class="input-group-addon">
                     <i class="glyphicon glyphicon-user"></i>
                     </span>
-                    <input type="Date" class="form-control" name="checkin-date" value="<?php echo remove_junk($product['checkin_date']); ?>" placeholder="Checked In Date">
+                    <input type="Date" class="form-control" name="checkin-date" value="<?php echo remove_junk($item['checkin_date']); ?>" placeholder="Checked In Date">
                   </div>
                 </div>
 
@@ -186,7 +235,7 @@ if(!$product){
                     <span class="input-group-addon">
                     <i class="glyphicon glyphicon-home"></i>
                     </span>
-                    <input type="text" class="form-control" name="checkin-room" value="<?php echo remove_junk($product['checkin_room']); ?>" placeholder="Checked In Room">
+                    <input type="text" class="form-control" name="checkin-room" value="<?php echo remove_junk($item['checkin_room']); ?>" placeholder="Checked In Room">
                   </div>
                 </div>
 
@@ -196,7 +245,7 @@ if(!$product){
                     <span class="input-group-addon">
                     <i class="glyphicon glyphicon-map-marker"></i>
                     </span>
-                    <input type="text" class="form-control" name="checkin-location" value="<?php echo remove_junk($product['checkin_location']); ?>" placeholder="Checked In Location">
+                    <input type="text" class="form-control" name="checkin-location" value="<?php echo remove_junk($item['checkin_location']); ?>" placeholder="Checked In Location">
                   </div>
                 </div>
 
@@ -212,7 +261,7 @@ if(!$product){
                       <span class="input-group-addon">
                       <i class="glyphicon glyphicon-barcode"></i>
                       </span>
-                      <input type="text" class="form-control" name="checkin-location-barcode" value="<?php echo remove_junk($product['checkin_location_barcode']); ?>" placeholder="Checked In Location Barcode">
+                      <input type="text" class="form-control" name="checkin-location-barcode" value="<?php echo remove_junk($item['checkin_location_barcode']); ?>" placeholder="Checked In Location Barcode">
                     </div>
                   </div>
 
@@ -222,7 +271,7 @@ if(!$product){
                       <span class="input-group-addon">
                       <i class="glyphicon glyphicon-barcode"></i>
                       </span>
-                      <input type="text" class="form-control" name="checkin-item-barcode" value="<?php echo remove_junk($product['checkin_item_barcode']); ?>" placeholder="Checked In Location Barcode">
+                      <input type="text" class="form-control" name="checkin-item-barcode" value="<?php echo remove_junk($item['checkin_item_barcode']); ?>" placeholder="Checked In Location Barcode">
                     </div>
                   </div>
 
@@ -232,7 +281,7 @@ if(!$product){
                       <span class="input-group-addon">
                       <i class="glyphicon glyphicon-comment"></i>
                       </span>
-                      <input type="text" class="form-control" name="comments" value="<?php echo remove_junk($product['comments']); ?>" placeholder="Comments">
+                      <input type="text" class="form-control" name="comments" value="<?php echo remove_junk($item['comments']); ?>" placeholder="Comments">
                     </div>
                   </div>
 
@@ -240,7 +289,7 @@ if(!$product){
               </div>
 
               
-              <button type="submit" name="product" class="btn btn-danger">Update</button>
+              <button type="submit" name="item" class="btn btn-danger">Update</button>
           </form>
          </div>
         </div>

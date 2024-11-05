@@ -8,48 +8,49 @@
 ?>
 <?php
  if(isset($_POST['check_in'])){
-   $req_fields = array('item-name','item-category','item-quantity','item-description','item-status','where-found','checkin-by','checkin-date','checkin-room','checkin-location','checkin-location-barcode','comments'  );
-  //  validate_fields($req_fields);
-   if(empty($errors)){
-     $i_name  = remove_junk($db->escape($_POST['item-name']));
-     $i_cat   = remove_junk($db->escape($_POST['item-category']));
-     $i_qty   = remove_junk($db->escape($_POST['item-quantity']));
-     $i_description   = remove_junk($db->escape($_POST['item-description']));
-     $i_status   = remove_junk($db->escape($_POST['item-status']));
-     $i_where_found   = remove_junk($db->escape($_POST['where-found']));
-     $i_checkin_by   = remove_junk($db->escape($_POST['checkin-by']));
-     $i_checkin_date   = remove_junk($db->escape($_POST['checkin-date']));
-     $i_checkin_room   = remove_junk($db->escape($_POST['checkin-room']));
-     $i_checkin_location   = remove_junk($db->escape($_POST['checkin-location']));
-     $i_checkin_location_barcode   = remove_junk($db->escape($_POST['checkin-location-barcode']));
-     $i_comments   = remove_junk($db->escape($_POST['comments']));
-     if (is_null($_POST['item-photo']) || $_POST['item-photo'] === "") {
-       $media_id = '0';
-     } else {
-       $media_id = remove_junk($db->escape($_POST['item-photo']));
-     }
-     $date    = make_date();
-     $query  = "INSERT INTO products (";
-     $query .=" name,quantity,description,status,where_found,checkin_by,checkin_date,checkin_room,checkin_location,checkin_location_barcode,comments,categorie_id,media_id,date";
-     $query .=") VALUES (";
-     $query .=" '{$i_name}', '{$i_qty}', '{$i_description}', '{$i_status}', '{$i_where_found}', '{$i_checkin_by}', '{$i_checkin_date}', '{$i_checkin_room}', '{$i_checkin_location}', '{$i_checkin_location_barcode}', '{$i_comments}', '{$i_cat}', '{$media_id}', '{$date}'";
-     $query .=")";
-     $query .=" ON DUPLICATE KEY UPDATE name='{$i_name}'";
-     if($db->query($query)){
-       $session->msg('s',"Item added ");
-       redirect('item.php', false);
-     } else {
-       $session->msg('d',' Sorry failed to added!');
-       redirect('item.php', false);
-     }
+  $req_fields = array('item-name','item-category','item-quantity','item-description','item-status','where-found','checkin-by','checkin-date','checkin-room','checkin-location','checkin-location-barcode','comments');
+  // validate_fields($req_fields);
+  if(empty($errors)){
+    $i_name  = remove_junk($db->escape($_POST['item-name']));
+    $i_cat   = remove_junk($db->escape($_POST['item-category']));
+    $i_qty   = remove_junk($db->escape($_POST['item-quantity']));
+    $i_description   = remove_junk($db->escape($_POST['item-description']));
+    $i_status   = remove_junk($db->escape($_POST['item-status']));
+    $i_where_found   = remove_junk($db->escape($_POST['where-found']));
+    $i_checkin_by   = remove_junk($db->escape($_POST['checkin-by']));
+    $i_checkin_date   = remove_junk($db->escape($_POST['checkin-date']));
+    $i_checkin_room   = remove_junk($db->escape($_POST['checkin-room']));
+    $i_checkin_location   = remove_junk($db->escape($_POST['checkin-location']));
+    $i_checkin_location_barcode   = remove_junk($db->escape($_POST['checkin-location-barcode']));
+    $i_comments   = remove_junk($db->escape($_POST['comments']));
+    $action = 'Check In';  // Set the action value to "Check In"
 
-   } else{
-     $session->msg("d", $errors);
-     redirect('check_in.php',false);
-   }
+    if (is_null($_POST['item-photo']) || $_POST['item-photo'] === "") {
+      $media_id = '0';
+    } else {
+      $media_id = remove_junk($db->escape($_POST['item-photo']));
+    }
+    $date    = make_date();
+    $query  = "INSERT INTO products (";
+    $query .=" name, quantity, description, status, where_found, checkin_by, checkin_date, checkin_room, checkin_location, checkin_location_barcode, comments, categorie_id, media_id, date, action";
+    $query .=") VALUES (";
+    $query .=" '{$i_name}', '{$i_qty}', '{$i_description}', '{$i_status}', '{$i_where_found}', '{$i_checkin_by}', '{$i_checkin_date}', '{$i_checkin_room}', '{$i_checkin_location}', '{$i_checkin_location_barcode}', '{$i_comments}', '{$i_cat}', '{$media_id}', '{$date}', '{$action}'";
+    $query .=")";
+    $query .=" ON DUPLICATE KEY UPDATE name='{$i_name}'";
+    if($db->query($query)){
+      $session->msg('s',"Item added ");
+      redirect('item.php', false);
+    } else {
+      $session->msg('d',' Sorry failed to add!');
+      redirect('item.php', false);
+    }
 
- }
+  } else{
+    $session->msg("d", $errors);
+    redirect('check_in.php',false);
+  }
 
+}
 ?>
 <?php include_once('layouts/header.php'); ?>
 <div class="row">
