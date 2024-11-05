@@ -21,8 +21,8 @@
 <?php
  //update user other info
   if(isset($_POST['update'])){
-    $req_fields = array('name','username' );
-    validate_fields($req_fields);
+    // $req_fields = array('name','username' );
+    // validate_fields($req_fields);
     if(empty($errors)){
              $id = (int)$_SESSION['user_id'];
            $name = remove_junk($db->escape($_POST['name']));
@@ -89,7 +89,7 @@
             </div>
             <div class="form-group">
                   <label for="username" class="control-label">Username</label>
-                  <input type="text" class="form-control" name="username" value="<?php echo remove_junk(ucwords($user['username'])); ?>">
+                  <input type="text" class="form-control" name="username" value="<?php echo remove_junk(($user['username'])); ?>">
             </div>
             <div class="form-group clearfix">
                     <a href="change_password.php" title="change password" class="btn btn-danger pull-right">Change Password</a>
