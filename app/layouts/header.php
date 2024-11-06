@@ -1,4 +1,5 @@
 <?php $user = current_user(); ?>
+<?php date_default_timezone_set('Asia/Manila'); ?>
 <!DOCTYPE html>
   <html lang="en">
     <head>
@@ -19,7 +20,9 @@
       <div class="logo pull-left"> SDH Equipment Inventory</div>
       <div class="header-content">
       <div class="header-date pull-left">
-        <strong><?php echo date("F j, Y, g:i a");?></strong>
+        <strong>
+        <strong><?php echo date("F j, Y, g:i:s A"); ?></strong>
+        </strong>
       </div>
       <div class="pull-right clearfix">
         <ul class="info-menu list-inline list-unstyled">

@@ -43,6 +43,15 @@ function search_checkout_items($search_term) {
   
   return find_by_sql($sql);
 }
+function search_user($search_term) {
+  global $db;
+  $search_term = $db->escape($search_term);
+  $sql  = "SELECT name, user_level, image, last_login ";
+  $sql .= "FROM users ";
+  $sql .= "WHERE (name LIKE '%$search_term%') "; 
+  $sql .= "ORDER BY last_login ASC";
+  return find_by_sql($sql);
+}
 /*--------------------------------------------------------------*/
 /* Function for Perform queries
 /*--------------------------------------------------------------*/
@@ -266,6 +275,14 @@ function tableExists($table){
     return find_by_sql($sql);
 
   }
+  function user_table(){
+    global $db;
+    $sql  = "SELECT name, user_level, image,last_login ";
+    $sql  .=" FROM users";
+    $sql .= " ORDER BY last_login ASC";
+    return find_by_sql($sql);
+
+   }
   /*--------------------------------------------------------------*/
   /* Function for Finding all product name
   /* Request coming from ajax.php for auto suggest
