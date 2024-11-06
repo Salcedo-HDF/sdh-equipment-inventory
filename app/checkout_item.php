@@ -21,11 +21,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $new_quantity = $current_quantity - $quantity;
 
             // Insert into the check_out table
-            $query = "INSERT INTO check_out (item_id, checkout_by, checkout_date, quantity, due_back_date, comments)";
-            $query .= " VALUES ('{$product_id}', '{$checkout_by}', '{$checkout_date}', '{$quantity}', '{$due_back_date}', '{$comments}')";
+            $query = "INSERT INTO check_out (item_id, checkout_by, checkout_date, quantity, due_back_date, comments) VALUES ('{$product_id}', '{$checkout_by}', '{$checkout_date}', '{$quantity}', '{$due_back_date}', '{$comments}')";
             
             if ($db->query($query)) {
-                // Update the quantity in the products table (no action update here)
+                // Update the quantity in the products table
                 $update_quantity_query = "UPDATE products SET quantity = '{$new_quantity}' WHERE id = '{$product_id}'";
                 if ($db->query($update_quantity_query)) {
                     $session->msg('s', "Item checked out successfully.");
