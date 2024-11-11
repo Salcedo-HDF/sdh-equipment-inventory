@@ -11,7 +11,7 @@ services:
     ports:
       - "8080:80"
     networks:
-      - inventory-system-net
+      - default
 
   db:
     image: mysql:8.0
@@ -25,10 +25,21 @@ services:
       - db_data:/var/lib/mysql
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - inventory-system-net
+      - default
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: rootpassword
+    ports:
+      - "8081:80"  # phpMyAdmin accessible at http://localhost:8081
+    depends_on:
+      - db
+    networks:
+      - default
 
 volumes:
   db_data:
 
-networks:
-  inventory-system-net:

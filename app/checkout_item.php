@@ -21,13 +21,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $new_quantity = $current_quantity - $quantity;
 
             // Insert into the check_out table
-            $query = "INSERT INTO check_out (item_id, checkout_by, checkout_date, quantity, due_back_date, comments) VALUES ('{$product_id}', '{$checkout_by}', '{$checkout_date}', '{$quantity}', '{$due_back_date}', '{$comments}')";
+            $query = "INSERT INTO check_out (item_id, checkout_by, checkout_date, quantity, due_back_date, comments) 
+                      VALUES ('{$product_id}', '{$checkout_by}', '{$checkout_date}', '{$quantity}', '{$due_back_date}', '{$comments}')";
             
             if ($db->query($query)) {
                 // Update the quantity in the products table
                 $update_quantity_query = "UPDATE products SET quantity = '{$new_quantity}' WHERE id = '{$product_id}'";
+                
                 if ($db->query($update_quantity_query)) {
-                    $session->msg('s', "Item checked out successfully.");
+                    // Log the checkout action in the logs table
+                    $log_query = "INSERT INTO logs (action, item_id, user, quantity, action_date) 
+                                  VALUES ('Check Out', '{$product_id}', '{$checkout_by}', '{$quantity}', '{$checkout_date}')";
+                    
+                    if ($db->query($log_query)) {
+                        $session->msg('s', "Item checked out and logged successfully.");
+                    } else {
+                        $session->msg('d', 'Failed to log the checkout action.');
+                    }
+                    
                     redirect('check_out.php');
                 } else {
                     $session->msg('d', 'Failed to update product quantity.');
