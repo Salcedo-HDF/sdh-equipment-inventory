@@ -49,7 +49,20 @@ function search_user($search_term) {
   $sql  = "SELECT name, user_level, image, last_login ";
   $sql .= "FROM users ";
   $sql .= "WHERE (name LIKE '%$search_term%') "; 
-  $sql .= "ORDER BY last_login ASC";
+  $sql .= "ORDER BY last_login DESC";
+  return find_by_sql($sql);
+}
+function search_logs($search_term) {
+  global $db;
+  $search_term = $db->escape($search_term); 
+  $sql  = "SELECT l.id, l.action, l.user, l.quantity, l.action_date, p.name,p.media_id, ";
+  $sql .= "m.file_name AS image ";
+  $sql .= "FROM logs l ";
+  $sql .= "LEFT JOIN products p ON l.item_id = p.id ";
+  $sql .= "LEFT JOIN media m ON m.id = p.media_id ";
+  $sql .= "WHERE p.name LIKE '%{$search_term}%' OR l.user LIKE '%{$search_term}%' ";
+  $sql .= "ORDER BY l.action_date ASC";
+  
   return find_by_sql($sql);
 }
 /*--------------------------------------------------------------*/
@@ -279,10 +292,21 @@ function tableExists($table){
     global $db;
     $sql  = "SELECT name, user_level, image,last_login ";
     $sql  .=" FROM users";
-    $sql .= " ORDER BY last_login ASC";
+    $sql .= " ORDER BY last_login DESC";
     return find_by_sql($sql);
 
    }
+   function join_logs_table(){
+    global $db;
+    $sql  = "SELECT l.id, l.action, l.user, l.quantity, l.action_date, p.name,p.media_id, ";
+    $sql .= "m.file_name AS image ";
+    $sql .= "FROM logs l ";
+    $sql .= "LEFT JOIN products p ON l.item_id = p.id ";
+    $sql .= "LEFT JOIN media m ON m.id = p.media_id ";
+    $sql .= " ORDER BY l.action_date ASC";
+    return find_by_sql($sql);
+
+  }
   /*--------------------------------------------------------------*/
   /* Function for Finding all product name
   /* Request coming from ajax.php for auto suggest
