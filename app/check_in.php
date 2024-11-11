@@ -5,49 +5,57 @@ require_once('includes/load.php');
 $all_categories = find_all('categories');
 $all_photo = find_all('media');
 
+// Get the logged-in user's name or ID
+$user_id = $_SESSION['user_id']; // Adjust this based on your session data structure
+
+// Query to get the user's name
+$user_query = "SELECT name FROM users WHERE id = '{$user_id}' LIMIT 1";
+$user_result = $db->query($user_query);
+$user_name = ($user_result && $db->num_rows($user_result) > 0) ? $db->fetch_assoc($user_result)['name'] : '';
+
 if (isset($_POST['check_in'])) {
-    // Removed the required fields validation
     $i_name = remove_junk($db->escape($_POST['item-name']));
     $i_cat = remove_junk($db->escape($_POST['item-category']));
     $i_qty = remove_junk($db->escape($_POST['item-quantity']));
     $i_description = remove_junk($db->escape($_POST['item-description']));
     $i_status = remove_junk($db->escape($_POST['item-status']));
     $i_where_found = remove_junk($db->escape($_POST['where-found']));
-    $i_checkin_by = remove_junk($db->escape($_POST['checkin-by']));
     $i_checkin_date = remove_junk($db->escape($_POST['checkin-date']));
     $i_checkin_room = remove_junk($db->escape($_POST['checkin-room']));
     $i_checkin_location = remove_junk($db->escape($_POST['checkin-location']));
     $i_checkin_location_barcode = remove_junk($db->escape($_POST['checkin-location-barcode']));
     $i_comments = remove_junk($db->escape($_POST['comments']));
-    $action = 'Check In'; // Set the action value to "Check In"
+    $action = 'Check In';
+    $date = make_date();
 
     if (is_null($_POST['item-photo']) || $_POST['item-photo'] === "") {
         $media_id = '0';
     } else {
         $media_id = remove_junk($db->escape($_POST['item-photo']));
     }
-    $date = make_date();
-    
-    // Prepare the SQL query to handle empty values
-    $query = "INSERT INTO products (";
-    $query .= "name, quantity, description, status, where_found, checkin_by, checkin_date, checkin_room, checkin_location, checkin_location_barcode, comments, categorie_id, media_id, date, action";
-    $query .= ") VALUES (";
-    $query .= "'{$i_name}', '{$i_qty}', '{$i_description}', '{$i_status}', '{$i_where_found}', '{$i_checkin_by}', '{$i_checkin_date}', '{$i_checkin_room}', '{$i_checkin_location}', '{$i_checkin_location_barcode}', '{$i_comments}', '{$i_cat}', '{$media_id}', '{$date}', '{$action}'";
-    $query .= ")";
-    $query .= " ON DUPLICATE KEY UPDATE name='{$i_name}'"; // Update logic if needed
 
-    if ($db->query($query) === false) {
-        // Capture the error message
-        $error_message = $db->error;
-        $session->msg('d', "Sorry failed to add! Error: {$error_message}");
-        redirect('item.php', false);
-    }  
+    // Insert into products table
+    $query = "INSERT INTO products (name, quantity, description, status, where_found, checkin_by, checkin_date, checkin_room, checkin_location, checkin_location_barcode, comments, categorie_id, media_id, date, action) ";
+    $query .= "VALUES ('{$i_name}', '{$i_qty}', '{$i_description}', '{$i_status}', '{$i_where_found}', '{$user_name}', '{$i_checkin_date}', '{$i_checkin_room}', '{$i_checkin_location}', '{$i_checkin_location_barcode}', '{$i_comments}', '{$i_cat}', '{$media_id}', '{$date}', '{$action}') ";
+    $query .= "ON DUPLICATE KEY UPDATE name='{$i_name}'";
 
     if ($db->query($query)) {
-        $session->msg('s', "Item added ");
-        redirect('item.php', false);
+        // Get the last inserted item_id
+        $item_id = $db->insert_id();
+
+        // Insert into logs table
+        $log_query = "INSERT INTO logs (item_id, action, `user`, quantity, action_date) VALUES ('{$item_id}', '{$action}', '{$user_name}', '{$i_qty}', '{$date}')";
+        if ($db->query($log_query)) {
+            $session->msg('s', "Item added successfully.");
+            redirect('item.php', false);
+        } else {
+            $session->msg('d', 'Item added, but failed to log action.');
+            redirect('item.php', false);
+        }
+
     } else {
-        $session->msg('d', ' Sorry failed to add!');
+        $error_message = $db->error;
+        $session->msg('d', "Sorry failed to add! Error: {$error_message}");
         redirect('item.php', false);
     }
 }
@@ -108,7 +116,7 @@ if (isset($_POST['check_in'])) {
                      <span class="input-group-addon">
                       <i class="glyphicon glyphicon-list"></i>
                      </span>
-                     <input type="number" class="form-control" name="item-quantity" placeholder="Item Quantity">
+                     <input type="text" class="form-control" name="item-quantity" placeholder="Item Quantity">
                   </div>
                  </div>
 
@@ -159,12 +167,12 @@ if (isset($_POST['check_in'])) {
                   </div>
 
                   <div class="col-md-4">
-                    <label for="checkin-by">Check in By</label>
+                    <label for="checkin-date">Check in Date</label>
                     <div class="input-group">
                       <span class="input-group-addon">
                       <i class="glyphicon glyphicon-user"></i>
                       </span>
-                      <input type="text" class="form-control" name="checkin-by" placeholder="Checked In By">
+                      <input type="Date" class="form-control" name="checkin-date" placeholder="Checked In Date" required>
                     </div>
                   </div>
 
@@ -173,16 +181,6 @@ if (isset($_POST['check_in'])) {
 
               <div class="form-group">
                 <div class="row">
-
-                <div class="col-md-4">
-                  <label for="checkin-date">Check in Date</label>
-                  <div class="input-group">
-                    <span class="input-group-addon">
-                    <i class="glyphicon glyphicon-user"></i>
-                    </span>
-                    <input type="Date" class="form-control" name="checkin-date" placeholder="Checked In Date" required>
-                  </div>
-                </div>
 
                 <div class="col-md-4">
                   <label for="checkin-room">Check in Room</label>
@@ -204,21 +202,21 @@ if (isset($_POST['check_in'])) {
                   </div>
                 </div>
 
+                <div class="col-md-4">
+                  <label for="checkin-location-barcode">Check in Location Barcode</label>
+                  <div class="input-group">
+                    <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-barcode"></i>
+                    </span>
+                    <input type="text" class="form-control" name="checkin-location-barcode" placeholder="Checked In Location Barcode">
+                  </div>
+                </div>
+
                 </div>
               </div>
 
               <div class="form-group">
                 <div class="row">
-
-                  <div class="col-md-4">
-                    <label for="checkin-location-barcode">Check in Location Barcode</label>
-                    <div class="input-group">
-                      <span class="input-group-addon">
-                      <i class="glyphicon glyphicon-barcode"></i>
-                      </span>
-                      <input type="text" class="form-control" name="checkin-location-barcode" placeholder="Checked In Location Barcode">
-                    </div>
-                  </div>
 
                   <div class="col-md-4">
                     <label for="checkin-item-barcode">Check in Item Barcode</label>

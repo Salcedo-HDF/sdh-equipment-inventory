@@ -35,9 +35,9 @@ if (isset($_GET['search'])) {
                             <th class="text-center"> Photo</th>
                             <th class="text-center"> Item Name </th>
                             <th class="text-center"> User </th>
+                            <th class="text-center"> Quantity </th>
+                            <th class="text-center"> Date Action </th>
                             <th class="text-center"> Action </th>
-                            <th class="text-center"> Description </th>
-                            <th class="text-center"> Works/Don't Work </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -62,9 +62,9 @@ if (isset($_GET['search'])) {
                                     </td>
                                     <td><?php echo remove_junk($log['name']); ?></td>
                                     <td class="text-center"><?php echo remove_junk($log['user']); ?></td>
-                                    <td class="text-center"><?php echo remove_junk($log['action']); ?></td>
                                     <td class="text-center"><?php echo remove_junk($log['quantity']); ?></td>
                                     <td class="text-center"><?php echo remove_junk($log['action_date']); ?></td>
+                                    <td class="text-center"><?php echo remove_junk($log['action']); ?></td>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </tbody>
