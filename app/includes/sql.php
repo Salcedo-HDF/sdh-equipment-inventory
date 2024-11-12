@@ -61,7 +61,7 @@ function search_logs($search_term) {
   $sql .= "LEFT JOIN products p ON l.item_id = p.id ";
   $sql .= "LEFT JOIN media m ON m.id = p.media_id ";
   $sql .= "WHERE p.name LIKE '%{$search_term}%' OR l.user LIKE '%{$search_term}%' ";
-  $sql .= "ORDER BY l.action_date ASC";
+  $sql .= "ORDER BY l.action_date DESC";
   
   return find_by_sql($sql);
 }
@@ -303,7 +303,7 @@ function tableExists($table){
     $sql .= "FROM logs l ";
     $sql .= "LEFT JOIN products p ON l.item_id = p.id ";
     $sql .= "LEFT JOIN media m ON m.id = p.media_id ";
-    $sql .= " ORDER BY l.action_date ASC";
+    $sql .= " ORDER BY l.action_date DESC";
     return find_by_sql($sql);
 
   }
