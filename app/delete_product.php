@@ -7,16 +7,16 @@
   $product = find_by_id('products',(int)$_GET['id']);
   if(!$product){
     $session->msg("d","Missing Item id.");
-    redirect('product.php');
+    redirect('item.php');
   }
 ?>
 <?php
   $delete_id = delete_by_id('products',(int)$product['id']);
   if($delete_id){
       $session->msg("s","Items deleted.");
-      redirect('product.php');
+      redirect('item.php');
   } else {
       $session->msg("d","Items deletion failed.");
-      redirect('product.php');
+      redirect('item.php');
   }
 ?>

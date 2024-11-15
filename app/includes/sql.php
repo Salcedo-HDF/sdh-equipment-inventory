@@ -237,28 +237,34 @@ function tableExists($table){
   }
 
   /*--------------------------------------------------------------*/
-  /* Function for checking which user level has access to page
+  /* Function for checking which user level has access to page    */
   /*--------------------------------------------------------------*/
   function page_require_level($require_level) {
-      global $session;
-      $current_user = current_user();
-      $login_level = find_by_groupLevel($current_user['user_level']);
-      
-      // Check if user is logged in
-      if (!$session->isUserLoggedIn(true)):
-          $session->msg('d', 'Please login...');
-          redirect('index.php', false);
-      // Check if group status is inactive (banned)
-      elseif ($login_level['group_status'] === '0'):
-          $session->msg('d', 'This level user has been banned!');
-          redirect('home.php', false);
-      // Check if logged in user's level is less than or equal to required level
-      elseif ($current_user['user_level'] <= (int)$require_level):
-          return true;
-      else:
-          $session->msg("d", "Sorry! you don't have permission to view the page.");
-          redirect('home.php', false);
-      endif;
+    global $session;
+
+    // Check if user is logged in
+    if (!$session->isUserLoggedIn(true)) {
+        $session->msg('d', 'Please login...');
+        redirect('index.php', false);
+    }
+
+    // If logged in, retrieve current user and login level
+    $current_user = current_user();
+    $login_level = find_by_groupLevel($current_user['user_level']);
+
+    // Check if group status is inactive (banned)
+    if ($login_level['group_status'] === '0') {
+        $session->msg('d', 'This level user has been banned!');
+        redirect('home.php', false);
+    }
+
+    // Check if logged-in user's level is less than or equal to required level
+    if ($current_user['user_level'] <= (int)$require_level) {
+        return true;
+    } else {
+        $session->msg("d", "Sorry! You don't have permission to view the page.");
+        redirect('home.php', false);
+    }
   }
    /*--------------------------------------------------------------*/
    /* Function for Finding all product name

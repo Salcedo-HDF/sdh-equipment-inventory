@@ -5,8 +5,12 @@ require_once('includes/load.php');
 $all_categories = find_all('categories');
 $all_photo = find_all('media');
 
-// Get the logged-in user's name or ID
-$user_id = $_SESSION['user_id']; // Adjust this based on your session data structure
+// Check if the user is logged in
+if (!isset($_SESSION['user_id'])) {
+  // Redirect to login page or show a message
+  header('Location: index.php'); // Change this to your login page URL
+  exit();
+}
 
 // Query to get the user's name
 $user_query = "SELECT name FROM users WHERE id = '{$user_id}' LIMIT 1";
