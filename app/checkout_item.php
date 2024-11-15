@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $checkout_by = remove_junk($db->escape($_POST['checkout-by']));
     $checkout_date = remove_junk($db->escape($_POST['checkout-date']));
     $quantity = (int)$_POST['quantity'];
-    $due_back_date = remove_junk($db->escape($_POST['due-back-date']));
+    $due_back_date = !empty($_POST['due-back-date']) ? "'" . remove_junk($db->escape($_POST['due-back-date'])) . "'" : "NULL";
     $comments = remove_junk($db->escape($_POST['comments']));
 
     // Fetch the current quantity of the product from the products table
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Insert into the check_out table
             $query = "INSERT INTO check_out (item_id, checkout_by, checkout_date, quantity, due_back_date, comments) 
-                      VALUES ('{$product_id}', '{$checkout_by}', '{$checkout_date}', '{$quantity}', '{$due_back_date}', '{$comments}')";
+                    VALUES ('{$product_id}', '{$checkout_by}', '{$checkout_date}', '{$quantity}', {$due_back_date}, '{$comments}')";
             
             if ($db->query($query)) {
                 // Update the quantity in the products table
@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                   VALUES ('Check Out', '{$product_id}', '{$checkout_by}', '{$quantity}', '{$checkout_date}')";
                     
                     if ($db->query($log_query)) {
-                        $session->msg('s', "Item checked out and logged successfully.");
+                        $session->msg('s', "Item checked out successfully.");
                     } else {
                         $session->msg('d', 'Failed to log the checkout action.');
                     }

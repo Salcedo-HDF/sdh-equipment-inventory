@@ -34,7 +34,7 @@ if (isset($_GET['search'])) {
                             <th class="text-center" style="width: 50px;">#</th>
                             <th class="text-center"> Photo</th>
                             <th class="text-center"> Item Name </th>
-                            <th class="text-center"> User </th>
+                            <th class="text-center"> Person </th>
                             <th class="text-center"> Quantity </th>
                             <th class="text-center"> Date Action </th>
                             <th class="text-center"> Action </th>
