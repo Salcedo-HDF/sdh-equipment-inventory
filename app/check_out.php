@@ -159,13 +159,3 @@
   </script>
 
 <?php include_once('layouts/footer.php'); ?>
-
-<!--
-Category
-Item
-Picture 
-Check in Item Barcode
-Check Out By
-Check Out Date
-Due Back Date 
--->

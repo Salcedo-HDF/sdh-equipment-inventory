@@ -37,6 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id'])) {
                     $user = 'Unknown'; // Default if user not found
                 }
 
+                date_default_timezone_set('Asia/Manila');
+
                 // Insert a log entry for the check-in action
                 $action = "Check In";
                 $action_date = date("Y-m-d H:i:s");

@@ -9,6 +9,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $due_back_date = !empty($_POST['due-back-date']) ? "'" . remove_junk($db->escape($_POST['due-back-date'])) . "'" : "NULL";
     $comments = remove_junk($db->escape($_POST['comments']));
 
+    date_default_timezone_set('Asia/Manila');
+
+    // Combine the date from the form with the current time
+    $checkout_datetime = $checkout_date . ' ' . date('H:i:s'); // Current time added
+
     // Fetch the current quantity of the product from the products table
     $result = $db->query("SELECT quantity FROM products WHERE id = '{$product_id}'");
     if ($result && $db->num_rows($result) > 0) {
@@ -22,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Insert into the check_out table
             $query = "INSERT INTO check_out (item_id, checkout_by, checkout_date, quantity, due_back_date, comments) 
-                    VALUES ('{$product_id}', '{$checkout_by}', '{$checkout_date}', '{$quantity}', {$due_back_date}, '{$comments}')";
+                    VALUES ('{$product_id}', '{$checkout_by}', '{$checkout_datetime}', '{$quantity}', {$due_back_date}, '{$comments}')";
             
             if ($db->query($query)) {
                 // Update the quantity in the products table
@@ -31,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if ($db->query($update_quantity_query)) {
                     // Log the checkout action in the logs table
                     $log_query = "INSERT INTO logs (action, item_id, user, quantity, action_date) 
-                                  VALUES ('Check Out', '{$product_id}', '{$checkout_by}', '{$quantity}', '{$checkout_date}')";
+                                  VALUES ('Check Out', '{$product_id}', '{$checkout_by}', '{$quantity}', '{$checkout_datetime}')";
                     
                     if ($db->query($log_query)) {
                         $session->msg('s', "Item checked out successfully.");
@@ -58,4 +63,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         redirect('check_out.php');
     }
 }
+
 ?>
