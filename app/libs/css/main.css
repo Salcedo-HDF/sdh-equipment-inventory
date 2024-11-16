@@ -3,7 +3,7 @@ body{
   font-weight: 400;
   overflow-x: hidden;
   overflow-y: auto;
-  background: #f1f2f7;
+  background: #ffffff;
   height: 100%;
   width: 100%;
 }a{
@@ -17,7 +17,7 @@ body{
   padding: 0 20px;
   background-color: #dbd5d5;
   border: 1px solid #fefcfc;
-  border-radius: 10%;
+  border-radius: 5%;
   margin-top: 100px;
 }.login-page .text-center{
   margin-bottom: 10px;
@@ -276,11 +276,11 @@ table tfoot tr td:first-child{
 }.btn-primary {
     color: #fff;
     background-color: #51aded;
-    border-color: #3d8fd8
+    border-color: #3d8fd8;
 }.btn-primary:hover, .btn-primary:focus, .btn-primary.focus, .btn-primary:active, .btn-primary.active{
     color: #fff;
     background-color: #3175b8;
-    border-color: #3d8fd8
+    border-color: #3d8fd8;
 }.btn-success{
    background-color:#2ecc71
 }.btn-success:hover, .btn-success:focus, .btn-success.focus, .btn-success:active, .btn-success.active{
@@ -292,9 +292,9 @@ table tfoot tr td:first-child{
   background-color:#d0ac2c;
   border-color: #dfba3c;
 }.btn-danger{
-  background-color: #ed5153
+  background-color: #ed5153;
 }.btn-danger:hover, .btn-danger:focus, .btn-danger.focus, .btn-danger:active, .btn-danger.active{
-  background-color:#bb282a
+  background-color:#bb282a;
 }.input-group-addon{
   background-color: #fcfcfc;
   border: 1px solid #dbdbdb;

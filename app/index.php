@@ -8,7 +8,7 @@
     <div class="text-center">
        <h1>Login Panel</h1>
        <h4>SDH Equipment Inventory</h4>
-     </div>
+    </div>
      <?php echo display_msg($msg); ?>
       <form method="post" action="auth.php" class="clearfix">
         <div class="form-group">
@@ -26,13 +26,27 @@
             </div>
         </div>
         <div class="form-group center">
-                <button type="submit" class="btn btn-danger" style="border-radius:0%">Login</button>
+                <button type="submit" class="btn btn-danger" id="btn" style="border-radius:0%">Login</button>
         </div>
     </form>
 </div>
 <style>
-  .btn {
+  body {
+    font-family: Georgia, serif;
+  }
+  #btn {
     width: 100%;
+    border-color: #fff;
+    color: #bb282a;
+    background-color: #fff;
+  }
+  #btn:hover {
+    color: #fff;
+    background-color: #bb282a;
+  }
+  .login-page {
+    background-color: #bb282a;
+    color: #fff; 
   }
 </style>
 <?php include_once('layouts/footer.php'); ?>
