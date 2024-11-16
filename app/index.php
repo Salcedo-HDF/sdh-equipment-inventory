@@ -13,15 +13,26 @@
       <form method="post" action="auth.php" class="clearfix">
         <div class="form-group">
               <label for="username" class="control-label">Username</label>
-              <input type="name" class="form-control" name="username" placeholder="Username">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <input type="name" class="form-control" name="username" placeholder="Username">
+              </div>
         </div>
         <div class="form-group">
             <label for="Password" class="control-label">Password</label>
-            <input type="password" name= "password" class="form-control" placeholder="Password">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                <input type="password" name="password" class="form-control" placeholder="Password">
+            </div>
         </div>
         <div class="form-group center">
                 <button type="submit" class="btn btn-danger" style="border-radius:0%">Login</button>
         </div>
     </form>
 </div>
+<style>
+  .btn {
+    width: 100%;
+  }
+</style>
 <?php include_once('layouts/footer.php'); ?>

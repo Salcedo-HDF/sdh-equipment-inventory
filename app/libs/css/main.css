@@ -15,8 +15,10 @@ body{
   width: 350px;
   margin: 5% 48% 6% auto;
   padding: 0 20px;
-  background-color: #f9f9f9;
-  border: 1px solid #f2f2f2;
+  background-color: #dbd5d5;
+  border: 1px solid #fefcfc;
+  border-radius: 10%;
+  margin-top: 100px;
 }.login-page .text-center{
   margin-bottom: 10px;
 }.box{
