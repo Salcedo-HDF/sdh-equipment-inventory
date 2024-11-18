@@ -28,72 +28,74 @@
         </form>
         </div>
         <div class="panel-body">
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th class="text-center" style="width: 50px;">#</th>
-                <th class="text-center"> Photo</th>
-                <th class="text-center"> Item Name </th>
-                <th class="text-center"> Category </th>
-                <th class="text-center"> Number of Items </th>
-                <th class="text-center"> Description </th>
-                <th class="text-center"> Works/Don't Work </th>
-                <th class="text-center"> Where Found </th>
-                <th class="text-center"> Checkin By </th>
-                <th class="text-center"> Chek in Date </th>
-                <th class="text-center"> Check in Room </th>
-                <th class="text-center"> Check in Location </th>
-                <th class="text-center"> Check in Location Barcode </th>
-                <th class="text-center"> Check in item Barcode </th>
-                <th class="text-center"> Actions </th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php if (empty($products)): ?>
-                  <tr>
-                      <td colspan="15" class="text-center btn-danger">No items found</td>
-                  </tr>
-              <?php else: ?>
-                <?php foreach ($products as $product):?>
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
                 <tr>
-                  <td class="text-center"><?php echo count_id();?></td>
-                  <td>
-                    <?php if($product['media_id'] === '0'): ?>
-                      <img class="img-avatar img-circle" src="uploads/products/no_image.png" alt="">
-                    <?php else: ?>
-                    <img class="img-avatar img-circle" src="uploads/products/<?php echo $product['image']; ?>" alt="">
-                  <?php endif; ?>
-                  </td>
-                  <td> <?php echo remove_junk($product['name']); ?></td>
-                  <td class="text-center"> <?php echo remove_junk($product['categorie']); ?></td>
-                  <td class="text-center"> <?php echo remove_junk($product['quantity']); ?></td>
-                  <td class="text-center"> <?php echo remove_junk($product['description']); ?></td>
-                  <td class="text-center"> <?php echo remove_junk($product['status']); ?></td>
-                  <td class="text-center"> <?php echo remove_junk($product['where_found']); ?></td>
-                  <td class="text-center"> <?php echo remove_junk($product['checkin_by']); ?></td>
-                  <td class="text-center"> <?php echo remove_junk($product['checkin_date']); ?></td>
-                  <td class="text-center"> <?php echo remove_junk($product['checkin_room']); ?></td>
-                  <td class="text-center"> <?php echo remove_junk($product['checkin_location']); ?></td>
-                  <td class="text-center"> <?php echo remove_junk($product['checkin_location_barcode']); ?></td>
-                  <td class="text-center"> <?php echo remove_junk($product['checkin_item_barcode']); ?></td>
-                  <td class="text-center">
-                    <div class="btn-group">
-                      <button 
-                        class="btn btn-info btn-xs" 
-                        title="Check Out" 
-                        data-toggle="modal" 
-                        data-target="#checkoutModal"
-                        onclick="fillModal(<?php echo (int)$product['id']; ?>, '<?php echo remove_junk($product['name']); ?>', '<?php echo remove_junk($product['categorie']); ?>')"
-                      >
-                        <span class="glyphicon glyphicon-log-out"></span>
-                      </button>
-                    </div>
-                  </td>
+                  <th class="text-center" style="width: 50px;">#</th>
+                  <th class="text-center"> Photo</th>
+                  <th class="text-center"> Item Name </th>
+                  <th class="text-center"> Category </th>
+                  <th class="text-center"> Number of Items </th>
+                  <th class="text-center"> Description </th>
+                  <th class="text-center"> Works/Don't Work </th>
+                  <th class="text-center"> Where Found </th>
+                  <th class="text-center"> Checkin By </th>
+                  <th class="text-center"> Chek in Date </th>
+                  <th class="text-center"> Check in Room </th>
+                  <th class="text-center"> Check in Location </th>
+                  <th class="text-center"> Check in Location Barcode </th>
+                  <th class="text-center"> Check in item Barcode </th>
+                  <th class="text-center"> Actions </th>
                 </tr>
-              <?php endforeach; ?>
-             <?php endif; ?>
-            </tbody>
-          </tabel>
+              </thead>
+              <tbody>
+                <?php if (empty($products)): ?>
+                    <tr>
+                        <td colspan="15" class="text-center btn-danger">No items found</td>
+                    </tr>
+                <?php else: ?>
+                  <?php foreach ($products as $product):?>
+                  <tr>
+                    <td class="text-center"><?php echo count_id();?></td>
+                    <td>
+                      <?php if($product['media_id'] === '0'): ?>
+                        <img class="img-avatar img-circle" src="uploads/products/no_image.png" alt="">
+                      <?php else: ?>
+                      <img class="img-avatar img-circle" src="uploads/products/<?php echo $product['image']; ?>" alt="">
+                    <?php endif; ?>
+                    </td>
+                    <td> <?php echo remove_junk($product['name']); ?></td>
+                    <td class="text-center"> <?php echo remove_junk($product['categorie']); ?></td>
+                    <td class="text-center"> <?php echo remove_junk($product['quantity']); ?></td>
+                    <td class="text-center"> <?php echo remove_junk($product['description']); ?></td>
+                    <td class="text-center"> <?php echo remove_junk($product['status']); ?></td>
+                    <td class="text-center"> <?php echo remove_junk($product['where_found']); ?></td>
+                    <td class="text-center"> <?php echo remove_junk($product['checkin_by']); ?></td>
+                    <td class="text-center"> <?php echo remove_junk($product['checkin_date']); ?></td>
+                    <td class="text-center"> <?php echo remove_junk($product['checkin_room']); ?></td>
+                    <td class="text-center"> <?php echo remove_junk($product['checkin_location']); ?></td>
+                    <td class="text-center"> <?php echo remove_junk($product['checkin_location_barcode']); ?></td>
+                    <td class="text-center"> <?php echo remove_junk($product['checkin_item_barcode']); ?></td>
+                    <td class="text-center">
+                      <div class="btn-group">
+                        <button 
+                          class="btn btn-info btn-xs" 
+                          title="Check Out" 
+                          data-toggle="modal" 
+                          data-target="#checkoutModal"
+                          onclick="fillModal(<?php echo (int)$product['id']; ?>, '<?php echo remove_junk($product['name']); ?>', '<?php echo remove_junk($product['categorie']); ?>')"
+                        >
+                          <span class="glyphicon glyphicon-log-out"></span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                <?php endforeach; ?>
+              <?php endif; ?>
+              </tbody>
+            </tabel>
+          </div>
         </div>
       </div>
     </div>
@@ -159,3 +161,18 @@
   </script>
 
 <?php include_once('layouts/footer.php'); ?>
+
+<style>
+    .table-responsive {
+        max-height: 75vh; 
+        overflow-y: auto;
+    }
+
+    .table-bordered thead th {
+        position: sticky;
+        top: 0;
+        background-color: #f8f9fa; 
+        z-index: 2; 
+        border-bottom: 2px solid #dee2e6;
+    }
+</style>
