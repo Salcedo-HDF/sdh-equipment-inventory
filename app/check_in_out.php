@@ -28,49 +28,66 @@ if (isset($_GET['search'])) {
                 </form>
             </div>
             <div class="panel-body">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th class="text-center" style="width: 50px;">#</th>
-                            <th class="text-center"> Photo</th>
-                            <th class="text-center"> Item Name </th>
-                            <th class="text-center"> Person </th>
-                            <th class="text-center"> Quantity </th>
-                            <th class="text-center"> Date Action </th>
-                            <th class="text-center"> Action </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if (isset($_GET['search']) && !empty($search_query) && empty($logs)): ?>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
                             <tr>
-                                <td colspan="15" class="text-center btn-danger">Nothing Found</td>
+                                <th class="text-center" style="width: 50px;">#</th>
+                                <th class="text-center"> Photo</th>
+                                <th class="text-center"> Item Name </th>
+                                <th class="text-center"> Person </th>
+                                <th class="text-center"> Quantity </th>
+                                <th class="text-center"> Date Action </th>
+                                <th class="text-center"> Action </th>
                             </tr>
-                        <?php elseif (empty($logs)): ?>
-                            <tr>
-                                <td colspan="15" class="text-center btn-danger">No Logs</td>
-                            </tr>
-                        <?php else: ?>
-                            <?php foreach ($logs as $log): ?>
+                        </thead>
+                        <tbody>
+                            <?php if (isset($_GET['search']) && !empty($search_query) && empty($logs)): ?>
                                 <tr>
-                                    <td class="text-center"><?php echo count_id(); ?></td>
-                                    <td>
-                                        <?php if ($log['media_id'] === '0'): ?>
-                                            <img class="img-avatar img-circle" src="uploads/products/no_image.png" alt="">
-                                        <?php else: ?>
-                                            <img class="img-avatar img-circle" src="uploads/products/<?php echo $log['image']; ?>" alt="">
-                                        <?php endif; ?>
-                                    </td>
-                                    <td><?php echo remove_junk($log['name']); ?></td>
-                                    <td class="text-center"><?php echo remove_junk($log['user']); ?></td>
-                                    <td class="text-center"><?php echo remove_junk($log['quantity']); ?></td>
-                                    <td class="text-center"><?php echo remove_junk($log['action_date']); ?></td>
-                                    <td class="text-center"><?php echo remove_junk($log['action']); ?></td>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
+                                    <td colspan="15" class="text-center btn-danger">Nothing Found</td>
+                                </tr>
+                            <?php elseif (empty($logs)): ?>
+                                <tr>
+                                    <td colspan="15" class="text-center btn-danger">No Logs</td>
+                                </tr>
+                            <?php else: ?>
+                                <?php foreach ($logs as $log): ?>
+                                    <tr>
+                                        <td class="text-center"><?php echo count_id(); ?></td>
+                                        <td>
+                                            <?php if ($log['media_id'] === '0'): ?>
+                                                <img class="img-avatar img-circle" src="uploads/products/no_image.png" alt="">
+                                            <?php else: ?>
+                                                <img class="img-avatar img-circle" src="uploads/products/<?php echo $log['image']; ?>" alt="">
+                                            <?php endif; ?>
+                                        </td>
+                                        <td><?php echo remove_junk($log['name']); ?></td>
+                                        <td class="text-center"><?php echo remove_junk($log['user']); ?></td>
+                                        <td class="text-center"><?php echo remove_junk($log['quantity']); ?></td>
+                                        <td class="text-center"><?php echo remove_junk($log['action_date']); ?></td>
+                                        <td class="text-center"><?php echo remove_junk($log['action']); ?></td>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <?php include_once('layouts/footer.php'); ?>
+
+<style>
+    .table-responsive {
+        max-height: 75vh; 
+        overflow-y: auto;
+    }
+
+    .table-bordered thead th {
+        position: sticky;
+        top: 0;
+        background-color: #f8f9fa; 
+        z-index: 2; 
+        border-bottom: 2px solid #dee2e6;
+    }
+</style>
