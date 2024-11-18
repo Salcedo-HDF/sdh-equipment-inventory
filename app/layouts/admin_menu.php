@@ -11,7 +11,7 @@
       <span>Check In</span>
     </a>
     <ul class="nav submenu">
-       <li><a href="item.php">Check In Items</a> </li>
+       <li><a href="item.php">List of Check In Items</a> </li>
        <li><a href="check_in.php">Check In an Item</a> </li>
    </ul>
   </li>
@@ -21,7 +21,7 @@
       <span>Check Out</span>
     </a>
     <ul class="nav submenu">
-       <li><a href="checkout_items.php">Check Out Items</a> </li>
+       <li><a href="checkout_items.php">List of Check Out Items</a> </li>
        <li><a href="check_out.php">Check Out an Item</a> </li>
    </ul>
   </li>

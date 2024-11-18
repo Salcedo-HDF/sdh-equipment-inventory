@@ -12,6 +12,8 @@ if (!isset($_SESSION['user_id'])) {
   exit();
 }
 
+$user_id = $_SESSION['user_id'];
+
 // Query to get the user's name
 $user_query = "SELECT name FROM users WHERE id = '{$user_id}' LIMIT 1";
 $user_result = $db->query($user_query);
@@ -120,7 +122,7 @@ if (isset($_POST['check_in'])) {
                      <span class="input-group-addon">
                       <i class="glyphicon glyphicon-list"></i>
                      </span>
-                     <input type="text" class="form-control" name="item-quantity" placeholder="Item Quantity">
+                     <input type="number" class="form-control" name="item-quantity" placeholder="Item Quantity">
                   </div>
                  </div>
 

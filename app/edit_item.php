@@ -22,7 +22,6 @@ if(!$item){
     $p_description = isset($_POST['item-description']) ? remove_junk($db->escape($_POST['item-description'])) : null;
     $i_status = isset($_POST['item-status']) ? remove_junk($db->escape($_POST['item-status'])) : null;
     $i_where_found = isset($_POST['where-found']) ? remove_junk($db->escape($_POST['where-found'])) : null;
-    $i_checkin_by = isset($_POST['checkin-by']) ? remove_junk($db->escape($_POST['checkin-by'])) : null;
     $i_checkin_date = isset($_POST['checkin-date']) ? remove_junk($db->escape($_POST['checkin-date'])) : null;
     $i_checkin_room = isset($_POST['checkin-room']) ? remove_junk($db->escape($_POST['checkin-room'])) : null;
     $i_checkin_location = isset($_POST['checkin-location']) ? remove_junk($db->escape($_POST['checkin-location'])) : null;
@@ -49,10 +48,6 @@ if(!$item){
     
     if (!is_null($i_where_found)) {
         $query .= ", where_found ='{$i_where_found}'";
-    }
-    
-    if (!is_null($i_checkin_by)) {
-        $query .= ", checkin_by ='{$i_checkin_by}'";
     }
     
     if (!is_null($i_checkin_date)) {
@@ -204,12 +199,12 @@ if(!$item){
                   </div>
 
                   <div class="col-md-4">
-                    <label for="checkin-by">Check in By</label>
+                    <label for="checkin-date">Check in Date</label>
                     <div class="input-group">
                       <span class="input-group-addon">
                       <i class="glyphicon glyphicon-user"></i>
                       </span>
-                      <input type="text" class="form-control" name="checkin-by" value="<?php echo remove_junk($item['checkin_by']); ?>" placeholder="Checked In By">
+                      <input type="Date" class="form-control" name="checkin-date" value="<?php echo remove_junk($item['checkin_date']); ?>" placeholder="Checked In Date">
                     </div>
                   </div>
 
@@ -218,16 +213,6 @@ if(!$item){
 
               <div class="form-group">
                 <div class="row">
-
-                <div class="col-md-4">
-                  <label for="checkin-date">Check in Date</label>
-                  <div class="input-group">
-                    <span class="input-group-addon">
-                    <i class="glyphicon glyphicon-user"></i>
-                    </span>
-                    <input type="Date" class="form-control" name="checkin-date" value="<?php echo remove_junk($item['checkin_date']); ?>" placeholder="Checked In Date">
-                  </div>
-                </div>
 
                 <div class="col-md-4">
                   <label for="checkin-room">Check in Room</label>
@@ -249,21 +234,21 @@ if(!$item){
                   </div>
                 </div>
 
+                <div class="col-md-4">
+                  <label for="checkin-location-barcode">Check in Location Barcode</label>
+                  <div class="input-group">
+                    <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-barcode"></i>
+                    </span>
+                    <input type="text" class="form-control" name="checkin-location-barcode" value="<?php echo remove_junk($item['checkin_location_barcode']); ?>" placeholder="Checked In Location Barcode">
+                  </div>
+                </div>
+
                 </div>
               </div>
 
               <div class="form-group">
                 <div class="row">
-
-                  <div class="col-md-4">
-                    <label for="checkin-location-barcode">Check in Location Barcode</label>
-                    <div class="input-group">
-                      <span class="input-group-addon">
-                      <i class="glyphicon glyphicon-barcode"></i>
-                      </span>
-                      <input type="text" class="form-control" name="checkin-location-barcode" value="<?php echo remove_junk($item['checkin_location_barcode']); ?>" placeholder="Checked In Location Barcode">
-                    </div>
-                  </div>
 
                   <div class="col-md-4">
                     <label for="checkin-item-barcode">Check in Item Barcode</label>
