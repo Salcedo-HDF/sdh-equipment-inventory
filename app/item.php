@@ -108,7 +108,7 @@ if (isset($_GET['search'])) {
 
 <style>
     .table-responsive {
-        max-height: 70vh; /* Adjust the height as needed */
+        max-height: 75vh; /* Adjust the height as needed */
         overflow-y: auto;
     }
 
