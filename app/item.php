@@ -108,15 +108,15 @@ if (isset($_GET['search'])) {
 
 <style>
     .table-responsive {
-        max-height: 75vh; /* Adjust the height as needed */
+        max-height: 75vh; 
         overflow-y: auto;
     }
 
     .table-bordered thead th {
         position: sticky;
         top: 0;
-        background-color: #f8f9fa; /* Adjust header background color */
-        z-index: 2; /* Ensures the header stays on top of table rows */
+        background-color: #f8f9fa; 
+        z-index: 2; 
         border-bottom: 2px solid #dee2e6;
     }
 </style>
