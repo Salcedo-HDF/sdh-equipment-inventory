@@ -6,13 +6,13 @@
     </a>
   </li>
   <li>
-    <a href="sales.php">
+    <a href="items.php">
         <i class="glyphicon glyphicon-th-list"></i>
         <span>Check In Item List</span>
     </a>
   </li>
   <li>
-    <a href="sales.php">
+    <a href="items.php">
         <i class="glyphicon glyphicon-th-list"></i>
         <span>Check Out Item List</span>
     </a>
