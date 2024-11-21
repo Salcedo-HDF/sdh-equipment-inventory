@@ -12,7 +12,7 @@
     </a>
   </li>
   <li>
-    <a href="items.php">
+    <a href="check_out_items.php">
         <i class="glyphicon glyphicon-th-list"></i>
         <span>Check Out Item List</span>
     </a>

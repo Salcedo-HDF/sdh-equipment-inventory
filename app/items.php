@@ -46,6 +46,7 @@ if (isset($_GET['search'])) {
                                 <th class="text-center"> Check in Location </th>
                                 <th class="text-center"> Check in Location Barcode </th>
                                 <th class="text-center"> Check in item Barcode </th>
+                                <th class="text-center"> Actions </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -80,6 +81,19 @@ if (isset($_GET['search'])) {
                                         <td class="text-center"><?php echo remove_junk($product['checkin_location']); ?></td>
                                         <td class="text-center"><?php echo remove_junk($product['checkin_location_barcode']); ?></td>
                                         <td class="text-center"><?php echo remove_junk($product['checkin_item_barcode']); ?></td>
+                                        <td class="text-center">
+                                            <div class="btn-group">
+                                                <button 
+                                                class="btn btn-info btn-xs" 
+                                                title="Check Out" 
+                                                data-toggle="modal" 
+                                                data-target="#checkoutModal"
+                                                onclick="fillModal(<?php echo (int)$product['id']; ?>, '<?php echo remove_junk($product['name']); ?>', '<?php echo remove_junk($product['categorie']); ?>')"
+                                                >
+                                                <span class="glyphicon glyphicon-log-out"></span>
+                                                </button>
+                                            </div>
+                                        </td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>
@@ -90,6 +104,66 @@ if (isset($_GET['search'])) {
         </div>
     </div>
 </div>
+
+<!-- Check Out Modal Requests -->
+<div id="checkoutModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Request Check Out</h4>
+        </div>
+        <div class="modal-body">
+        <form method="POST" action="req_checkout_item.php">
+            <input type="hidden" name="product-id" id="modal-product-id">
+            
+            <!-- Item Information (Read-only fields) -->
+            <div class="form-group">
+            <label>Item Name:</label>
+            <input type="text" class="form-control" id="modal-product-name" readonly>
+            </div>
+            <div class="form-group">
+            <label>Category:</label>
+            <input type="text" class="form-control" id="modal-product-category" readonly>
+            </div>
+            
+            <!-- Checkout Details -->
+            <div class="form-group">
+            <label>Check Out By:</label>
+            <input type="text" class="form-control" name="checkout-by" required>
+            </div>
+            <div class="form-group">
+            <label>Check Out Date:</label>
+            <input type="date" class="form-control" name="checkout-date" required>
+            </div>
+            <div class="form-group">
+            <label>Quantity:</label>
+            <input type="number" class="form-control" name="quantity" required>
+            </div>
+            <div class="form-group">
+            <label>Due Back Date:</label>
+            <input type="date" class="form-control" name="due-back-date">
+            </div>
+            <div class="form-group">
+            <label>Comments:</label>
+            <textarea class="form-control" name="comments"></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+        </div>
+    </div>
+    </div>
+</div>
+
+<script>
+    function fillModal(id, name, category) {
+    document.getElementById('modal-product-id').value = id;
+    document.getElementById('modal-product-name').value = name;
+    document.getElementById('modal-product-category').value = category;
+    }
+</script>
+
 <?php include_once('layouts/footer.php'); ?>
 
 <style>
