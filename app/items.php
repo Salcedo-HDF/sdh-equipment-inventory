@@ -46,7 +46,6 @@ if (isset($_GET['search'])) {
                                 <th class="text-center"> Check in Location </th>
                                 <th class="text-center"> Check in Location Barcode </th>
                                 <th class="text-center"> Check in item Barcode </th>
-                                <th class="text-center"> Actions </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -81,16 +80,6 @@ if (isset($_GET['search'])) {
                                         <td class="text-center"><?php echo remove_junk($product['checkin_location']); ?></td>
                                         <td class="text-center"><?php echo remove_junk($product['checkin_location_barcode']); ?></td>
                                         <td class="text-center"><?php echo remove_junk($product['checkin_item_barcode']); ?></td>
-                                        <td class="text-center">
-                                            <div class="btn-group">
-                                                <a href="edit_item.php?id=<?php echo (int)$product['id'];?>" class="btn btn-info btn-xs" title="Edit" data-toggle="tooltip">
-                                                    <span class="glyphicon glyphicon-edit"></span>
-                                                </a>
-                                                <a href="delete_product.php?id=<?php echo (int)$product['id'];?>" class="btn btn-danger btn-xs" title="Delete" data-toggle="tooltip">
-                                                    <span class="glyphicon glyphicon-trash"></span>
-                                                </a>
-                                            </div>
-                                        </td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>
