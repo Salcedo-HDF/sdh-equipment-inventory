@@ -7,8 +7,8 @@
 <?php
   if(isset($_POST['add'])){
 
-   $req_fields = array('group-name','group-level');
-   validate_fields($req_fields);
+  //  $req_fields = array('group-name','group-level');
+  //  validate_fields($req_fields);
 
    if(find_by_groupName($_POST['group-name']) === false ){
      $session->msg('d','<b>Sorry!</b> Entered Group Name already in database!');
