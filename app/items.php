@@ -85,7 +85,7 @@ if (isset($_GET['search'])) {
                                             <div class="btn-group">
                                                 <button 
                                                 class="btn btn-info btn-xs" 
-                                                title="Check Out" 
+                                                title="Request" 
                                                 data-toggle="modal" 
                                                 data-target="#checkoutModal"
                                                 onclick="fillModal(<?php echo (int)$product['id']; ?>, '<?php echo remove_junk($product['name']); ?>', '<?php echo remove_junk($product['categorie']); ?>')"
@@ -128,15 +128,6 @@ if (isset($_GET['search'])) {
             <input type="text" class="form-control" id="modal-product-category" readonly>
             </div>
             
-            <!-- Checkout Details -->
-            <div class="form-group">
-            <label>Check Out By:</label>
-            <input type="text" class="form-control" name="checkout-by" required>
-            </div>
-            <div class="form-group">
-            <label>Check Out Date:</label>
-            <input type="date" class="form-control" name="checkout-date" required>
-            </div>
             <div class="form-group">
             <label>Quantity:</label>
             <input type="number" class="form-control" name="quantity" required>
