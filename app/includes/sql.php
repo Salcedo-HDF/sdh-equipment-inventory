@@ -68,13 +68,17 @@ function search_checkout_items($search_term) {
   
   return find_by_sql($sql);
 }
-function search_user($search_term) {
+function search_user($search_term, $items_per_page = 2, $current_page = 1) {
   global $db;
   $search_term = $db->escape($search_term);
+  $offset = ($current_page - 1) * $items_per_page;
+  
   $sql  = "SELECT name, user_level, image, last_login ";
   $sql .= "FROM users ";
   $sql .= "WHERE (name LIKE '%$search_term%') "; 
-  $sql .= "ORDER BY last_login DESC";
+  $sql .= "ORDER BY last_login DESC ";
+  $sql .= "LIMIT $items_per_page OFFSET $offset";  // Apply LIMIT and OFFSET for pagination
+  
   return find_by_sql($sql);
 }
 function search_logs($search_term) {
@@ -338,14 +342,23 @@ function tableExists($table){
 
       return find_by_sql($sql);
   }
-  function user_table(){
-    global $db;
-    $sql  = "SELECT name, user_level, image,last_login ";
-    $sql  .=" FROM users";
-    $sql .= " ORDER BY last_login DESC";
-    return find_by_sql($sql);
+  function user_table($items_per_page = 10, $current_page = 1) {
+      global $db;
+      $offset = ($current_page - 1) * $items_per_page;
 
-   }
+      $sql  = "SELECT name, user_level, image, last_login ";
+      $sql .= "FROM users ";
+      $sql .= "ORDER BY last_login DESC ";
+      $sql .= "LIMIT $items_per_page OFFSET $offset";  // Apply LIMIT and OFFSET for pagination
+
+      return find_by_sql($sql);
+  }
+  function count_total_users() {
+      global $db;
+      $sql = "SELECT COUNT(*) FROM users";
+      $result = find_by_sql($sql);
+      return $result[0]['COUNT(*)'];
+  }
    function join_logs_table(){
     global $db;
     $sql  = "SELECT l.id, l.action, l.user, l.quantity, l.action_date, p.name,p.media_id, ";
