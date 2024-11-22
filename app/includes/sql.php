@@ -278,7 +278,7 @@ function tableExists($table){
     $sql  .=" LEFT JOIN categories c ON c.id = p.categorie_id";
     $sql  .=" LEFT JOIN media m ON m.id = p.media_id";
     $sql .= " WHERE p.action = 'Check In'";
-    $sql  .=" ORDER BY p.id ASC";
+    $sql  .=" ORDER BY p.id DESC";
     return find_by_sql($sql);
 
    }
