@@ -5,7 +5,7 @@
   page_require_level(2);
 
   // Pagination variables
-  $items_per_page = 20;
+  $items_per_page = 1;
   $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
   $offset = ($current_page - 1) * $items_per_page;
 
@@ -22,7 +22,7 @@
   }
 
   // Fetch media files with pagination
-  $media_files = find_all('media', $items_per_page, $offset);
+  $media_files = find_all_media('media', $items_per_page, $offset);
 
   if (isset($_POST['submit'])) {
     $photo = new Media();

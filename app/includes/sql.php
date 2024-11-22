@@ -4,14 +4,20 @@ require_once('includes/load.php');
 /*--------------------------------------------------------------*/
 /* Function for find all database table rows by table name
 /*--------------------------------------------------------------*/
-function find_all($table, $limit = 0, $offset = 0) {
+function find_all($table) {
+   global $db;
+   if(tableExists($table))
+   {
+     return find_by_sql("SELECT * FROM ".$db->escape($table));
+   }
+}
+function find_all_media($table, $limit = 0, $offset = 0) {
   global $db;
   if (tableExists($table)) {
       $query = "SELECT * FROM " . $db->escape($table) . " LIMIT {$limit} OFFSET {$offset}";
       return find_by_sql($query);
   }
 }
-
 function search_items($search_term) {
   global $db;
   $items_per_page = 20;
