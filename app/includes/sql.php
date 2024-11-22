@@ -308,17 +308,28 @@ function tableExists($table){
 
       return find_by_sql($sql);
   }
-   function join_checkout_table(){
-    global $db;
-    $sql  =" SELECT p.id,p.name,p.description,p.status,p.where_found,p.checkin_by,p.checkin_date,p.checkin_room,p.checkin_location,p.checkin_location_barcode,p.checkin_item_barcode,p.comments,p.media_id,p.date,c.checkout_by,c.checkout_date,c.quantity,c.due_back_date,c.comments,q.name";
-    $sql  .=" AS categorie,m.file_name AS image";
-    $sql  .=" FROM check_out c";
-    $sql  .=" LEFT JOIN products p ON c.item_id = p.id";
-    $sql  .=" LEFT JOIN categories q ON q.id = p.categorie_id";
-    $sql  .=" LEFT JOIN media m ON m.id = p.media_id";
-    $sql  .=" ORDER BY p.id ASC";
-    return find_by_sql($sql);
+  function join_checkout_table() {
+      global $db;
+      
+      // Pagination setup
+      $items_per_page = 20;
+      $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+      $limit = $items_per_page;
+      $offset = ($current_page - 1) * $items_per_page;
 
+      // SQL query with JOINs and pagination
+      $sql  = "SELECT p.id, p.name, p.description, p.status, p.where_found, p.checkin_by, p.checkin_date, ";
+      $sql .= "p.checkin_room, p.checkin_location, p.checkin_location_barcode, p.checkin_item_barcode, p.comments, ";
+      $sql .= "p.media_id, p.date, c.checkout_by, c.checkout_date, c.quantity, c.due_back_date, c.comments, ";
+      $sql .= "q.name AS categorie, m.file_name AS image ";
+      $sql .= "FROM check_out c ";
+      $sql .= "LEFT JOIN products p ON c.item_id = p.id ";
+      $sql .= "LEFT JOIN categories q ON q.id = p.categorie_id ";
+      $sql .= "LEFT JOIN media m ON m.id = p.media_id ";
+      $sql .= "ORDER BY p.id ASC ";
+      $sql .= "LIMIT {$limit} OFFSET {$offset}";
+
+      return find_by_sql($sql);
   }
   function user_table(){
     global $db;
