@@ -8,17 +8,30 @@ $items_per_page = 20;
 $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $offset = ($current_page - 1) * $items_per_page;
 
-// Fetch total number of products
-$count_result = count_by_id('products');  // Adjust table name as needed.
-$total_items = $count_result['total'];
-echo "Total items: " . $total_items;
+// Fetch total number of products or search results
+if (isset($_GET['search'])) {
+    $search_query = $_GET['search'];
+    $count_result = count_search_items($search_query);  // Adjust counting function for search
+    $total_items = $count_result['total'];
+} else {
+    $count_result = count_by_id('products');
+    $total_items = $count_result['total'];
+}
+
+$total_pages = ceil($total_items / $items_per_page);
+
+// Ensure that the current page is within the valid range
+if ($current_page > $total_pages) {
+    $current_page = $total_pages;
+    $offset = ($current_page - 1) * $items_per_page;
+}
 
 // Fetch products with pagination
 if (isset($_GET['search'])) {
     $search_query = $_GET['search'];
-    $products = search_items($search_query, $items_per_page, $offset); // Add pagination support in search_items
+    $products = search_items($search_query);  // Make sure this query handles pagination correctly
 } else {
-    $products = join_product_table($items_per_page, $offset); // Modify to support pagination
+    $products = join_product_table($items_per_page, $offset);  // Default query with pagination
 }
 ?>
 
@@ -167,18 +180,25 @@ if (isset($_GET['search'])) {
 <!-- Pagination Controls -->
 <div class="pagination-controls text-center">
     <ul class="pagination">
+        <!-- Previous Page Button -->
         <?php if ($current_page > 1): ?>
             <li><a href="?page=<?php echo $current_page - 1; ?>">Previous</a></li>
+        <?php else: ?>
+            <li class="disabled"><span>Previous</span></li>
         <?php endif; ?>
-        
+
+        <!-- Page Numbers -->
         <?php for ($i = 1; $i <= $total_pages; $i++): ?>
             <li <?php if ($i == $current_page) echo 'class="active"'; ?>>
                 <a href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
             </li>
         <?php endfor; ?>
-        
+
+        <!-- Next Page Button -->
         <?php if ($current_page < $total_pages): ?>
             <li><a href="?page=<?php echo $current_page + 1; ?>">Next</a></li>
+        <?php else: ?>
+            <li class="disabled"><span>Next</span></li>
         <?php endif; ?>
     </ul>
 </div>
