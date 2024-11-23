@@ -51,6 +51,18 @@ function count_search_items($search_term) {
   $result = find_by_sql($sql);
   return $result[0]; // Return the total count from the query result
 }
+function count_logs($search_term) {
+  global $db;
+  $search_term = $db->escape($search_term);
+
+  $sql  = "SELECT COUNT(*) AS total ";
+  $sql .= "FROM logs l ";
+  $sql .= "LEFT JOIN products p ON l.item_id = p.id ";
+  $sql .= "WHERE p.name LIKE '%{$search_term}%' OR l.user LIKE '%{$search_term}%'";
+
+  $result = find_by_sql($sql);
+  return $result[0]; // Return the total count from the query result
+}
 function search_checkout_items($search_term) {
   global $db;
   $search_term = $db->escape($search_term);  // Ensure search term is escaped
@@ -83,15 +95,23 @@ function search_user($search_term, $items_per_page = 2, $current_page = 1) {
 }
 function search_logs($search_term) {
   global $db;
-  $search_term = $db->escape($search_term); 
-  $sql  = "SELECT l.id, l.action, l.user, l.quantity, l.action_date, p.name,p.media_id, ";
+  $items_per_page = 20;
+  $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+  $limit = $items_per_page;
+  $offset = ($current_page - 1) * $items_per_page;
+
+  // Escape the search term to prevent SQL injection
+  $search_term = $db->escape($search_term);
+
+  $sql  = "SELECT l.id, l.action, l.user, l.quantity, l.action_date, p.name, p.media_id, ";
   $sql .= "m.file_name AS image ";
   $sql .= "FROM logs l ";
   $sql .= "LEFT JOIN products p ON l.item_id = p.id ";
   $sql .= "LEFT JOIN media m ON m.id = p.media_id ";
   $sql .= "WHERE p.name LIKE '%{$search_term}%' OR l.user LIKE '%{$search_term}%' ";
-  $sql .= "ORDER BY l.action_date DESC";
-  
+  $sql .= "ORDER BY l.action_date DESC ";  // Add a space before the next clause
+  $sql .= "LIMIT {$limit} OFFSET {$offset}";
+
   return find_by_sql($sql);
 }
 /*--------------------------------------------------------------*/
@@ -359,16 +379,22 @@ function tableExists($table){
       $result = find_by_sql($sql);
       return $result[0]['COUNT(*)'];
   }
-   function join_logs_table(){
-    global $db;
-    $sql  = "SELECT l.id, l.action, l.user, l.quantity, l.action_date, p.name,p.media_id, ";
-    $sql .= "m.file_name AS image ";
-    $sql .= "FROM logs l ";
-    $sql .= "LEFT JOIN products p ON l.item_id = p.id ";
-    $sql .= "LEFT JOIN media m ON m.id = p.media_id ";
-    $sql .= " ORDER BY l.action_date DESC";
-    return find_by_sql($sql);
-
+  function join_logs_table() {
+      global $db;
+      $items_per_page = 20;
+      $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+      $limit = $items_per_page;
+      $offset = ($current_page - 1) * $items_per_page;
+      
+      $sql  = "SELECT l.id, l.action, l.user, l.quantity, l.action_date, p.name, p.media_id, ";
+      $sql .= "m.file_name AS image ";
+      $sql .= "FROM logs l ";
+      $sql .= "LEFT JOIN products p ON l.item_id = p.id ";
+      $sql .= "LEFT JOIN media m ON m.id = p.media_id ";
+      $sql .= "ORDER BY l.action_date DESC ";
+      $sql .= "LIMIT {$limit} OFFSET {$offset}";
+      
+      return find_by_sql($sql);
   }
   /*--------------------------------------------------------------*/
   /* Function for Finding all product name

@@ -12,10 +12,10 @@ $offset = ($current_page - 1) * $items_per_page;
 // Fetch total number of products or search results
 if (isset($_GET['search'])) {
     $search_query = $_GET['search'];
-    $count_result = count_search_items($search_query);  // Adjust counting function for search
+    $count_result = count_logs($search_query);  // Adjust counting function for search
     $total_items = $count_result['total'];
 } else {
-    $count_result = count_by_id('products');
+    $count_result = count_by_id('logs');
     $total_items = $count_result['total'];
 }
 
