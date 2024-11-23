@@ -373,11 +373,22 @@ function tableExists($table){
 
       return find_by_sql($sql);
   }
-  function count_total_users() {
+  function count_total_users($search_term = '') {
       global $db;
-      $sql = "SELECT COUNT(*) FROM users";
+
+      // Escape only if there is a search term
+      if ($search_term !== '') {
+          $search_term = $db->escape($search_term);
+      }
+
+      // Build SQL query based on search term
+      $sql = "SELECT COUNT(*) as total FROM users";
+      if ($search_term !== '') {
+          $sql .= " WHERE name LIKE '%$search_term%'";
+      }
+
       $result = find_by_sql($sql);
-      return $result[0]['COUNT(*)'];
+      return $result[0]['total'];
   }
   function join_logs_table() {
       global $db;
