@@ -37,7 +37,7 @@ function search_items($search_term) {
   $sql .= "LEFT JOIN media m ON m.id = p.media_id ";
   $sql .= "WHERE (p.name LIKE '%$search_term%' OR p.description LIKE '%$search_term%') ";
   $sql .= "AND p.action = 'Check In' "; // Only search items with 'Check In' status
-  $sql .= "ORDER BY p.id ASC ";
+  $sql .= "ORDER BY p.id DESC ";
   $sql .= "LIMIT {$limit} OFFSET {$offset}";
 
   return find_by_sql($sql);
