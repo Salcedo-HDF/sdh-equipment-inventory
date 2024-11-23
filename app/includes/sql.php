@@ -20,15 +20,16 @@ function find_all_media($table, $limit = 0, $offset = 0) {
 }
 function search_items($search_term) {
   global $db;
-  $items_per_page = 20;
+  $items_per_page = 5;
   $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
   $limit = $items_per_page;
   $offset = ($current_page - 1) * $items_per_page;
-  
-  // Escape the search term to prevent SQL injection
+
+  // Escape the search term
   $search_term = $db->escape($search_term);
-  
-  $sql  = "SELECT p.id, p.name, p.quantity, p.description, p.status, p.action, p.where_found, ";
+
+  // Improved SQL Query
+  $sql = "SELECT p.id, p.name, p.quantity, p.description, p.status, p.action, p.where_found, ";
   $sql .= "p.checkin_by, p.checkin_date, p.checkin_room, p.checkin_location, ";
   $sql .= "p.checkin_location_barcode, p.checkin_item_barcode, p.media_id, c.name AS categorie, ";
   $sql .= "m.file_name AS image ";
@@ -36,7 +37,7 @@ function search_items($search_term) {
   $sql .= "LEFT JOIN categories c ON c.id = p.categorie_id ";
   $sql .= "LEFT JOIN media m ON m.id = p.media_id ";
   $sql .= "WHERE (p.name LIKE '%$search_term%' OR p.description LIKE '%$search_term%') ";
-  $sql .= "AND p.action = 'Check In' "; // Only search items with 'Check In' status
+  $sql .= "AND p.action = 'Check In' ";
   $sql .= "ORDER BY p.id DESC ";
   $sql .= "LIMIT {$limit} OFFSET {$offset}";
 
@@ -45,11 +46,13 @@ function search_items($search_term) {
 function count_search_items($search_term) {
   global $db;
   $search_term = $db->escape($search_term);
+  
   $sql = "SELECT COUNT(*) AS total FROM products p ";
   $sql .= "WHERE (p.name LIKE '%$search_term%' OR p.description LIKE '%$search_term%') ";
-  $sql .= "AND p.action = 'Check In'"; // Only count items with 'Check In' status
+  $sql .= "AND p.action = 'Check In'";
+  
   $result = find_by_sql($sql);
-  return $result[0]; // Return the total count from the query result
+  return $result[0];  // Return the total count
 }
 function count_logs($search_term) {
   global $db;
