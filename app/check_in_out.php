@@ -75,6 +75,33 @@ if (isset($_GET['search'])) {
         </div>
     </div>
 </div>
+
+<!-- Pagination Controls -->
+<div class="pagination-controls text-center">
+    <ul class="pagination">
+        <!-- Previous Page Button -->
+        <?php if ($current_page > 1): ?>
+            <li><a href="?page=<?php echo $current_page - 1; ?>">Previous</a></li>
+        <?php else: ?>
+            <li class="disabled"><span>Previous</span></li>
+        <?php endif; ?>
+
+        <!-- Page Numbers -->
+        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+            <li <?php if ($i == $current_page) echo 'class="active"'; ?>>
+                <a href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+            </li>
+        <?php endfor; ?>
+
+        <!-- Next Page Button -->
+        <?php if ($current_page < $total_pages): ?>
+            <li><a href="?page=<?php echo $current_page + 1; ?>">Next</a></li>
+        <?php else: ?>
+            <li class="disabled"><span>Next</span></li>
+        <?php endif; ?>
+    </ul>
+</div>
+
 <?php include_once('layouts/footer.php'); ?>
 
 <style>
