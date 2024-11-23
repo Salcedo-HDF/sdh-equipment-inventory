@@ -1,7 +1,7 @@
 <?php
 $page_title = 'Check In & Check Out Logs';
 require_once('includes/load.php');
-// Checkin What level user has permission to view this page
+
 page_require_level(1);
 
 // Check if there's a search query
