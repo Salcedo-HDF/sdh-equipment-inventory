@@ -4,8 +4,30 @@ require_once('includes/load.php');
 
 page_require_level(1);
 
-// Check if there's a search query
-$search_query = '';
+// Pagination variables
+$items_per_page = 20;
+$current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($current_page - 1) * $items_per_page;
+
+// Fetch total number of products or search results
+if (isset($_GET['search'])) {
+    $search_query = $_GET['search'];
+    $count_result = count_search_items($search_query);  // Adjust counting function for search
+    $total_items = $count_result['total'];
+} else {
+    $count_result = count_by_id('products');
+    $total_items = $count_result['total'];
+}
+
+$total_pages = ceil($total_items / $items_per_page);
+
+// Ensure that the current page is within the valid range
+if ($current_page > $total_pages) {
+    $current_page = $total_pages;
+    $offset = ($current_page - 1) * $items_per_page;
+}
+
+// Fetch products with pagination
 if (isset($_GET['search'])) {
     $search_query = $_GET['search'];
     $logs = search_logs($search_query);
