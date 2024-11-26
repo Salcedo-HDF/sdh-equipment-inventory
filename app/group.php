@@ -33,22 +33,22 @@
           </tr>
         </thead>
         <tbody>
-        <?php foreach($all_groups as $a_group): ?>
+        <?php foreach($all_groups as $index => $a_group): ?>
           <tr>
-           <td class="text-center"><?php echo count_id();?></td>
-           <td><?php echo remove_junk(ucwords($a_group['group_name']))?></td>
-           <td class="text-center">
+            <td class="text-center"><?php echo $index + 1; ?></td>
+            <td><?php echo remove_junk(ucwords($a_group['group_name']))?></td>
+            <td class="text-center">
              <?php echo remove_junk(ucwords($a_group['group_level']))?>
-           </td>
-           <td class="text-center">
-           <?php if($a_group['group_status'] === '1'): ?>
-            <span class="label label-success"><?php echo "Active"; ?></span>
-          <?php else: ?>
-            <span class="label label-danger"><?php echo "Deactive"; ?></span>
-          <?php endif;?>
-           </td>
-           <td class="text-center">
-             <div class="btn-group">
+            </td>
+            <td class="text-center">
+            <?php if($a_group['group_status'] === '1'): ?>
+              <span class="label label-success"><?php echo "Active"; ?></span>
+            <?php else: ?>
+              <span class="label label-danger"><?php echo "Deactive"; ?></span>
+            <?php endif;?>
+            </td>
+            <td class="text-center">
+              <div class="btn-group">
                 <a href="edit_group.php?id=<?php echo (int)$a_group['id'];?>" class="btn btn-xs btn-warning" data-toggle="tooltip" title="Edit">
                   <i class="glyphicon glyphicon-pencil"></i>
                </a>
@@ -56,11 +56,11 @@
                   <i class="glyphicon glyphicon-remove"></i>
                 </a>
                 </div>
-           </td>
+            </td>
           </tr>
         <?php endforeach;?>
        </tbody>
-     </table>
+      </table>
      </div>
     </div>
   </div>
