@@ -71,9 +71,9 @@
                 </tr>
             </thead>
             <tbody>
-              <?php foreach ($all_categories as $cat):?>
+              <?php foreach ($all_categories as $index => $cat): ?>
                 <tr>
-                    <td class="text-center"><?php echo count_id();?></td>
+                    <td class="text-center"><?php echo $index + 1; ?></td>
                     <td><?php echo remove_junk(ucfirst($cat['name'])); ?></td>
                     <td class="text-center">
                       <div class="btn-group">
