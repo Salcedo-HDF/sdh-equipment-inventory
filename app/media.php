@@ -5,7 +5,7 @@
   page_require_level(2);
 
   // Pagination variables
-  $items_per_page = 1;
+  $items_per_page = 10;
   $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
   $offset = ($current_page - 1) * $items_per_page;
 
@@ -72,9 +72,9 @@
               </tr>
             </thead>
             <tbody>
-              <?php foreach ($media_files as $media_file): ?>
+              <?php foreach ($media_files as $index => $media_file): ?>
                 <tr class="list-inline">
-                  <td class="text-center"><?php echo count_id();?></td>
+                  <td class="text-center"><?php echo $offset + $index + 1; ?></td>
                   <td class="text-center">
                     <img src="uploads/products/<?php echo $media_file['file_name'];?>" class="img-thumbnail" />
                   </td>
