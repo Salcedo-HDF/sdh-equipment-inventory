@@ -75,9 +75,9 @@ $offset = ($current_page - 1) * $items_per_page;
                                     <td colspan="15" class="text-center btn-danger">No Items</td>
                                 </tr>
                             <?php else: ?>
-                                <?php foreach ($products as $product): ?>
+                                <?php foreach ($products as $index => $product): ?>
                                     <tr>
-                                        <td class="text-center"><?php echo count_id(); ?></td>
+                                        <td class="text-center"><?php echo $offset + $index + 1; ?></td>
                                         <td>
                                             <?php if ($product['media_id'] === '0'): ?>
                                                 <img class="img-avatar img-circle" src="uploads/products/no_image.png" alt="">
