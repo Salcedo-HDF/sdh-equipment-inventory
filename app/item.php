@@ -5,7 +5,7 @@ require_once('includes/load.php');
 page_require_level(2);
 
 // Pagination variables
-$items_per_page = 5;
+$items_per_page = 20;
 $current_page = isset($_GET['page']) && $_GET['page'] > 0 ? (int)$_GET['page'] : 1;
 $offset = ($current_page - 1) * $items_per_page;
 
@@ -38,7 +38,7 @@ $offset = ($current_page - 1) * $items_per_page;
                     <a href="check_in.php" class="btn btn-primary">Check in New Item</a>
                 </div>
                 <form action="item.php" method="GET" class="form-inline pull-left">
-                    <input type="text" name="search" class="form-control" placeholder="Search item...">
+                    <input type="text" name="search" class="form-control" placeholder="Search item..." value="<?php echo htmlspecialchars($search_query); ?>">
                     <button type="submit" class="btn btn-primary">Search</button>
                     <a href="item.php" class="btn btn-danger">Reset</a>
                 </form>
@@ -156,4 +156,11 @@ $offset = ($current_page - 1) * $items_per_page;
         z-index: 2; 
         border-bottom: 2px solid #dee2e6;
     }
+    th:first-child {
+        position: sticky;
+        left: 0;
+        background-color: #f8f9fa;
+        z-index: 3;
+    }
+
 </style>
