@@ -104,9 +104,9 @@ function make_date(){
 /*--------------------------------------------------------------*/
 /* Function for  Readable date time
 /*--------------------------------------------------------------*/
-function count_id(){
-  static $count = 1;
-  return $count++;
+function count_id($offset = 0) {
+  // The first ID on each page should be the offset + 1
+  return $offset + 1;
 }
 /*--------------------------------------------------------------*/
 /* Function for Creting random string
