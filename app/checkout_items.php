@@ -4,31 +4,21 @@
   // Checkin What level user has permission to view this page
    page_require_level(2);
 
-  // Pagination variables
   $items_per_page = 5;
-  $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+  $current_page = isset($_GET['page']) && $_GET['page'] > 0 ? (int)$_GET['page'] : 1;
   $offset = ($current_page - 1) * $items_per_page;
 
-  // Fetch total number of products or search results
-  $search_query = isset($_GET['search']) ? $_GET['search'] : '';
-  if ($search_query) {
-      $count_result = count_checkout($search_query);  // Adjust counting function for search
-      $total_items = $count_result['total'];
-  } else {
-      $count_result = count_by_id('check_out');
-      $total_items = $count_result['total'];
-  }
+  // Fetch total items or search results
+  $search_query = isset($_GET['search']) ? trim($_GET['search']) : '';
+  $total_items = count_checkout($search_query);
 
-  $total_pages = ceil($total_items / $items_per_page);
+  // Pagination calculation
+  $total_pages = max(ceil($total_items / $items_per_page), 1);
+  $current_page = min($current_page, $total_pages);
 
-  // Ensure that the current page is within the valid range
-  if ($current_page > $total_pages) {
-      $current_page = $total_pages;
-      $offset = ($current_page - 1) * $items_per_page;
-  }
+  // Fetch paginated products
+  $products = join_checkout_table($items_per_page, $offset, $search_query);
 
-  // Fetch products with pagination
-  $products = join_checkout_table($items_per_page, $offset, $search_query);  // Pass search query to the function
 ?>
 <?php include_once('layouts/header.php'); ?>
   <div class="row">
@@ -39,7 +29,7 @@
       <div class="panel panel-default">
         <div class="panel-heading clearfix">
          <form action="checkout_items.php" method="GET" class="form-inline pull-left">
-            <input type="text" name="search" class="form-control" placeholder="Search item...">
+            <input type="text" name="search" class="form-control" placeholder="Search item..." value="<?php echo htmlspecialchars($search_query); ?>">
             <button type="submit" class="btn btn-primary">Search</button>
             <a href="checkout_items.php" class="btn btn-danger">Reset</a>
         </form>
