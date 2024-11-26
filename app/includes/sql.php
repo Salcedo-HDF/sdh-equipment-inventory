@@ -20,7 +20,7 @@ function find_all_media($table, $limit = 0, $offset = 0) {
 }
 function search_items($search_term) {
   global $db;
-  $items_per_page = 5;
+  $items_per_page = 20;
   $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
   $limit = $items_per_page;
   $offset = ($current_page - 1) * $items_per_page;
@@ -54,6 +54,51 @@ function count_search_items($search_term) {
   $result = find_by_sql($sql);
   return $result[0];  // Return the total count
 }
+// Count total items with optional search
+function count_items($search_term = null) {
+  global $db;
+  $sql = "SELECT COUNT(*) AS total FROM products p WHERE p.action = 'Check In'";
+  
+  if ($search_term) {
+      $search_term = $db->escape($search_term);
+      $sql .= " AND (p.name LIKE '%$search_term%' OR p.description LIKE '%$search_term%')";
+  }
+  
+  $result = find_by_sql($sql);
+  return $result[0]['total'];
+}
+
+// Fetch paginated products with optional search
+function get_paginated_products($items_per_page, $offset, $search_term = null) {
+  global $db;
+  
+  $sql = "SELECT p.id, p.name, p.quantity, p.description, p.status, p.where_found, 
+                 p.checkin_by, p.checkin_date, p.checkin_room, p.checkin_location, 
+                 p.checkin_location_barcode, p.checkin_item_barcode, p.media_id, c.name AS categorie, m.file_name AS image 
+          FROM products p
+          LEFT JOIN categories c ON c.id = p.categorie_id 
+          LEFT JOIN media m ON m.id = p.media_id 
+          WHERE p.action = 'Check In'";
+  
+  if ($search_term) {
+      $search_term = $db->escape($search_term);
+      $sql .= " AND (p.name LIKE '%$search_term%' OR p.description LIKE '%$search_term%')";
+  }
+  
+  $sql .= " ORDER BY p.id DESC LIMIT {$items_per_page} OFFSET {$offset}";
+  
+  return find_by_sql($sql);
+}
+function count_checkout($search_term = '') {
+  global $db;
+  $sql = "SELECT COUNT(*) AS total FROM check_out c ";
+  if ($search_term) {
+    $search_term = $db->escape($search_term);
+    $sql .= "WHERE c.checkout_by LIKE '%{$search_term}%' ";
+  }
+  $result = find_by_sql($sql);
+  return $result[0];  // Return the total count
+}
 function count_logs($search_term) {
   global $db;
   $search_term = $db->escape($search_term);
@@ -68,18 +113,24 @@ function count_logs($search_term) {
 }
 function search_checkout_items($search_term) {
   global $db;
+  $items_per_page = 10;
+  $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+  $limit = $items_per_page;
+  $offset = ($current_page - 1) * $items_per_page;
   $search_term = $db->escape($search_term);  // Ensure search term is escaped
+  
   $sql  = "SELECT p.id, p.name, p.description, p.status, p.where_found, p.checkin_by, ";
   $sql .= "p.checkin_date, p.checkin_room, p.checkin_location, p.checkin_location_barcode, ";
   $sql .= "p.checkin_item_barcode, p.comments, p.media_id, p.date, ";
-  $sql .= "c.checkout_by, c.checkout_date, c.quantity, c.due_back_date, c.comments, q.name AS categorie, ";
-  $sql .= "m.file_name AS image ";
+  $sql .= "c.checkout_by, c.checkout_date, c.quantity, c.due_back_date, c.comments, ";
+  $sql .= "q.name AS categorie, m.file_name AS image ";
   $sql .= "FROM check_out c ";
   $sql .= "LEFT JOIN products p ON c.item_id = p.id ";
   $sql .= "LEFT JOIN categories q ON q.id = p.categorie_id ";
   $sql .= "LEFT JOIN media m ON m.id = p.media_id ";
   $sql .= "WHERE p.name LIKE '%{$search_term}%' OR c.checkout_by LIKE '%{$search_term}%' ";
-  $sql .= "ORDER BY p.id ASC";
+  $sql .= "ORDER BY p.id DESC ";
+  $sql .= "LIMIT {$limit} OFFSET {$offset}";
   
   return find_by_sql($sql);
 }
@@ -342,29 +393,33 @@ function tableExists($table){
 
       return find_by_sql($sql);
   }
-  function join_checkout_table() {
-      global $db;
-      
-      // Pagination setup
-      $items_per_page = 20;
-      $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-      $limit = $items_per_page;
-      $offset = ($current_page - 1) * $items_per_page;
-
-      // SQL query with JOINs and pagination
-      $sql  = "SELECT p.id, p.name, p.description, p.status, p.where_found, p.checkin_by, p.checkin_date, ";
-      $sql .= "p.checkin_room, p.checkin_location, p.checkin_location_barcode, p.checkin_item_barcode, p.comments, ";
-      $sql .= "p.media_id, p.date, c.checkout_by, c.checkout_date, c.quantity, c.due_back_date, c.comments, ";
-      $sql .= "q.name AS categorie, m.file_name AS image ";
-      $sql .= "FROM check_out c ";
-      $sql .= "LEFT JOIN products p ON c.item_id = p.id ";
-      $sql .= "LEFT JOIN categories q ON q.id = p.categorie_id ";
-      $sql .= "LEFT JOIN media m ON m.id = p.media_id ";
-      $sql .= "ORDER BY p.id ASC ";
-      $sql .= "LIMIT {$limit} OFFSET {$offset}";
-
-      return find_by_sql($sql);
-  }
+  function join_checkout_table($items_per_page, $offset, $search_query = '') {
+    global $db;
+    
+    // SQL query with JOINs and pagination
+    $sql  = "SELECT p.id, p.name, p.description, p.status, p.where_found, p.checkin_by, p.checkin_date, ";
+    $sql .= "p.checkin_room, p.checkin_location, p.checkin_location_barcode, p.checkin_item_barcode, p.comments, ";
+    $sql .= "p.media_id, p.date, c.checkout_by, c.checkout_date, c.quantity, c.due_back_date, c.comments, ";
+    $sql .= "q.name AS categorie, m.file_name AS image ";
+    $sql .= "FROM check_out c ";
+    $sql .= "LEFT JOIN products p ON c.item_id = p.id ";
+    $sql .= "LEFT JOIN categories q ON q.id = p.categorie_id ";
+    $sql .= "LEFT JOIN media m ON m.id = p.media_id ";
+    
+    if (!empty($search_query)) {
+        $search_query = "%" . $db->escape($search_query) . "%";
+        $sql .= "WHERE p.name LIKE ? OR c.checkout_by LIKE ? ";
+    }
+  
+    $sql .= "ORDER BY p.id ASC ";
+    $sql .= "LIMIT {$items_per_page} OFFSET {$offset}";
+  
+    if (!empty($search_query)) {
+        return find_by_sql($sql, [$search_query, $search_query]);
+    } else {
+        return find_by_sql($sql);
+    }
+  }  
   function user_table($items_per_page = 10, $current_page = 1) {
       global $db;
       $offset = ($current_page - 1) * $items_per_page;

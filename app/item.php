@@ -5,31 +5,26 @@ require_once('includes/load.php');
 page_require_level(2);
 
 // Pagination variables
-$items_per_page = 20;
+$items_per_page = 5;
 $current_page = isset($_GET['page']) && $_GET['page'] > 0 ? (int)$_GET['page'] : 1;
 $offset = ($current_page - 1) * $items_per_page;
 
 // Fetch total items or search results
-if (isset($_GET['search']) && !empty(trim($_GET['search']))) {
-    $search_query = trim($_GET['search']);
-    $count_result = count_search_items($search_query);
-    $total_items = $count_result['total'];
-} else {
-    $count_result = count_by_id('products');
-    $total_items = $count_result['total'];
-}
+$search_query = isset($_GET['search']) ? trim($_GET['search']) : '';
+$total_items = count_items($search_query);
+
+// Pagination calculation
+$total_pages = max(ceil($total_items / $items_per_page), 1);
+$current_page = min($current_page, $total_pages);
+
+// Fetch paginated products
+$products = get_paginated_products($items_per_page, $offset, $search_query);
 
 // Ensure at least one page exists
 $total_pages = max(ceil($total_items / $items_per_page), 1);
 $current_page = min($current_page, $total_pages);
 $offset = ($current_page - 1) * $items_per_page;
 
-// Fetch products with pagination
-if (isset($search_query)) {
-    $products = search_items($search_query);
-} else {
-    $products = join_product_table($items_per_page, $offset);
-}
 ?>
 <?php include_once('layouts/header.php'); ?>
 <div class="row">
