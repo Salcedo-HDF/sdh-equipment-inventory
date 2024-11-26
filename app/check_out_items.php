@@ -4,36 +4,20 @@
   // Checkin What level user has permission to view this page
    page_require_level(3);
 
-   // Pagination variables
-  $items_per_page = 20;
-  $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+   $items_per_page = 5;
+  $current_page = isset($_GET['page']) && $_GET['page'] > 0 ? (int)$_GET['page'] : 1;
   $offset = ($current_page - 1) * $items_per_page;
 
-  // Fetch total number of products or search results
-  if (isset($_GET['search'])) {
-      $search_query = $_GET['search'];
-      $count_result = count_search_items($search_query);  // Adjust counting function for search
-      $total_items = $count_result['total'];
-  } else {
-      $count_result = count_by_id('products');
-      $total_items = $count_result['total'];
-  }
+  // Fetch total items or search results
+  $search_query = isset($_GET['search']) ? trim($_GET['search']) : '';
+  $total_items = count_checkout($search_query);
 
-  $total_pages = ceil($total_items / $items_per_page);
+  // Pagination calculation
+  $total_pages = max(ceil($total_items / $items_per_page), 1);
+  $current_page = min($current_page, $total_pages);
 
-  // Ensure that the current page is within the valid range
-  if ($current_page > $total_pages) {
-      $current_page = $total_pages;
-      $offset = ($current_page - 1) * $items_per_page;
-  }
-
-  // Fetch check out items with pagination
-  if (isset($_GET['search'])) {
-    $search_query = $_GET['search'];
-    $products = search_checkout_items($search_query);  // Make sure this query handles pagination correctly
-  } else {
-    $products = join_checkout_table($items_per_page, $offset);  // Default query with pagination
-  }
+  // Fetch paginated products
+  $products = join_checkout_table($items_per_page, $offset, $search_query);
 ?>
 <?php include_once('layouts/header.php'); ?>
 <div class="row">
@@ -103,32 +87,28 @@
     </div>
 </div>
 
-
-<!-- Pagination Controls at the Bottom -->
+<!-- Pagination Controls -->
 <div class="pagination-controls text-center">
-    <ul class="pagination">
-        <!-- Previous Page Button -->
-        <?php if ($current_page > 1): ?>
-            <li><a href="?page=<?php echo $current_page - 1; ?>">Previous</a></li>
-        <?php else: ?>
-            <li class="disabled"><span>Previous</span></li>
-        <?php endif; ?>
+      <ul class="pagination">
+          <?php if ($current_page > 1): ?>
+              <li><a href="?page=<?php echo $current_page - 1 . (isset($search_query) ? "&search=" . urlencode($search_query) : ""); ?>">Previous</a></li>
+          <?php else: ?>
+              <li class="disabled"><span>Previous</span></li>
+          <?php endif; ?>
 
-        <!-- Page Numbers -->
-        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-            <li <?php if ($i == $current_page) echo 'class="active"'; ?>>
-                <a href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-            </li>
-        <?php endfor; ?>
+          <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+              <li <?php if ($i == $current_page) echo 'class="active"'; ?>>
+                  <a href="?page=<?php echo $i . (isset($search_query) ? "&search=" . urlencode($search_query) : ""); ?>"><?php echo $i; ?></a>
+              </li>
+          <?php endfor; ?>
 
-        <!-- Next Page Button -->
-        <?php if ($current_page < $total_pages): ?>
-            <li><a href="?page=<?php echo $current_page + 1; ?>">Next</a></li>
-        <?php else: ?>
-            <li class="disabled"><span>Next</span></li>
-        <?php endif; ?>
-    </ul>
-</div>
+          <?php if ($current_page < $total_pages): ?>
+              <li><a href="?page=<?php echo $current_page + 1 . (isset($search_query) ? "&search=" . urlencode($search_query) : ""); ?>">Next</a></li>
+          <?php else: ?>
+              <li class="disabled"><span>Next</span></li>
+          <?php endif; ?>
+      </ul>
+  </div>
 
 <?php include_once('layouts/footer.php'); ?>
 
