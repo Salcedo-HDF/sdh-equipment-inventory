@@ -86,7 +86,7 @@ if (isset($_GET['search'])) {
                                         <td><?php echo remove_junk($log['name']); ?></td>
                                         <td class="text-center"><?php echo remove_junk($log['user']); ?></td>
                                         <td class="text-center"><?php echo remove_junk($log['quantity']); ?></td>
-                                        <td class="text-center"><?php echo remove_junk($log['action_date']); ?></td>
+                                        <td class="text-center"><?php echo read_date($log['action_date']); ?></td>
                                         <td class="text-center"><?php echo remove_junk($log['action']); ?></td>
                                 <?php endforeach; ?>
                             <?php endif; ?>
