@@ -31,7 +31,7 @@ $total_pages = ceil($total_users / $items_per_page);
         <div class="panel panel-default">
             <div class="panel-heading clearfix">
                 <form action="log_in_out.php" method="GET" class="form-inline pull-left">
-                    <input type="text" name="search" class="form-control" placeholder="Search user...">
+                    <input type="text" name="search" class="form-control" placeholder="Search user..." value="<?php echo htmlspecialchars($search_query); ?>">
                     <button type="submit" class="btn btn-primary">Search</button>
                     <a href="log_in_out.php" class="btn btn-danger">Reset</a>
                 </form>
