@@ -5,8 +5,9 @@ require_once('includes/load.php');
 page_require_level(1);
 
 // Pagination settings
-$items_per_page = 2; // Number of items per page
+$items_per_page = 10; // Number of items per page
 $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Get current page or default to 1
+$offset = ($current_page - 1) * $items_per_page; // Calculate the offset
 
 // Check if there's a search query
 $search_query = '';
@@ -56,9 +57,9 @@ $total_pages = ceil($total_users / $items_per_page);
                                 <td colspan="5" class="text-center btn-danger">No User Found</td>
                             </tr>
                         <?php else: ?>
-                            <?php foreach ($infos as $info): ?>
+                            <?php foreach ($infos as $index => $info): ?>
                                 <tr>
-                                    <td class="text-center"><?php echo count_id(); ?></td>
+                                    <td class="text-center"><?php echo $offset + $index + 1; ?></td>
                                     <td>
                                         <img class="img-avatar img-circle" src="uploads/users/<?php echo $info['image']; ?>" alt="">
                                     </td>
