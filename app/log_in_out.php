@@ -64,7 +64,7 @@ $total_pages = ceil($total_users / $items_per_page);
                                     </td>
                                     <td><?php echo remove_junk($info['name']); ?></td>
                                     <td class="text-center"><?php echo remove_junk($info['user_level']); ?></td>
-                                    <td class="text-center"><?php echo remove_junk($info['last_login']); ?></td>
+                                    <td class="text-center"><?php echo read_date($info['last_login']); ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         <?php endif; ?>
