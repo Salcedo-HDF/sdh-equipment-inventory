@@ -557,4 +557,34 @@ function count_request($search_term = null) {
   $result = find_by_sql($sql);
   return $result[0]['total'];
 }
+function join_requests_log($items_per_page, $offset, $search_term = null) {
+  global $db;
+  
+  $sql  = "SELECT r.id, r.item_id, r.action, r.request_by, r.quantity, r.date_request, p.name, p.media_id, ";
+  $sql .= "m.file_name AS image ";
+  $sql .= "FROM requests_log r ";
+  $sql .= "LEFT JOIN products p ON r.item_id = p.id ";
+  $sql .= "LEFT JOIN media m ON m.id = p.media_id ";
+  
+  if ($search_term) {
+      $search_term = $db->escape($search_term);
+      $sql .= " WHERE (p.name LIKE '%$search_term%' OR r.request_by LIKE '%$search_term%')";
+  }
+  
+  $sql .= " ORDER BY r.date_request DESC LIMIT {$items_per_page} OFFSET {$offset}";
+  
+  return find_by_sql($sql);
+}
+function count_requests_log($search_term = null) {
+  global $db;
+  $sql = "SELECT COUNT(*) AS total FROM requests_log r LEFT JOIN products p ON r.item_id = p.id";
+  
+  if ($search_term) {
+      $search_term = $db->escape($search_term);
+      $sql .= " WHERE (p.name LIKE '%$search_term%' OR r.request_by LIKE '%$search_term%')";
+  }
+  
+  $result = find_by_sql($sql);
+  return $result[0]['total'];
+}
 ?>
