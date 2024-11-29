@@ -35,6 +35,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($db->query($sql)) {
 
+        $log_sql = "INSERT INTO requests_log (item_id, action, request_by, quantity, date_request) 
+                    VALUES ('{$product_id}', 'Request', '{$user_name}', '{$quantity}', '{$date_request}')";
+        $db->query($log_sql);
+
         $session->msg("s", "Request submitted successfully!");
         redirect('items.php', false);
     } else {
