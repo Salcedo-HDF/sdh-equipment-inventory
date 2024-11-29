@@ -30,8 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Prepare SQL to insert the request
     $date_request = date("Y-m-d H:i:s");
-    $sql = "INSERT INTO requests (item_id, request_by, quantity, dueback_date, comments, date_request) 
-        VALUES ('{$product_id}', '{$user_name}', '{$quantity}', " . ($due_back_date ? "'{$due_back_date}'" : "NULL") . ", '{$comments}', '{$date_request}')";
+    $sql = "INSERT INTO requests (item_id, request_by, quantity, dueback_date, comments, date_request, action) 
+        VALUES ('{$product_id}', '{$user_name}', '{$quantity}', " . ($due_back_date ? "'{$due_back_date}'" : "NULL") . ", '{$comments}', '{$date_request}', 'Request')";
 
     if ($db->query($sql)) {
 
