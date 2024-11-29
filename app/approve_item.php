@@ -38,6 +38,17 @@ if ($db->query($sql)) {
     $sql_update_request = "UPDATE requests SET action = 'Approve' WHERE id = '{$request_id}'";
     if ($db->query($sql_update_request)) {
 
+        // Log the approval in requests_log table
+        $user_id = (int)$_SESSION['user_id']; // Get the logged-in user ID
+        $user_query = "SELECT name FROM users WHERE id = '{$user_id}' LIMIT 1";
+        $user_result = $db->query($user_query);
+        $user_name = ($user_result && $db->num_rows($user_result) > 0) ? $db->fetch_assoc($user_result)['name'] : '';
+
+        $date_approval = date("Y-m-d H:i:s");
+        $log_sql = "INSERT INTO requests_log (item_id, action, request_by, quantity, date_request) 
+                    VALUES ('{$item_id}', 'Approve', '{$user_name}', '{$quantity}', '{$date_approval}')";
+        $db->query($log_sql);  // Execute the log insertion
+
         $session->msg('s', 'Request approved successfully.');
         redirect('requests.php');
     } else {
