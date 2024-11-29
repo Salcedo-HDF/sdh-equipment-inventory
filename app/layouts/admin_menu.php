@@ -47,6 +47,14 @@
       <li><a href="users.php">Manage Users</a> </li>
    </ul>
   </li>
+
+  <li>
+    <a href="requests.php" >
+      <i class="glyphicon glyphicon-send"></i>
+      <span>Requests</span>
+    </a>
+  </li>
+  
   <li>
     <a href="#" class="submenu-toggle">
       <i class="glyphicon glyphicon-file"></i>
@@ -58,4 +66,5 @@
       <li><a href="requests_log.php">Requests</a> </li>
    </ul>
   </li>
+
 </ul>

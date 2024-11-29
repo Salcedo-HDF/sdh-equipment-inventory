@@ -523,5 +523,36 @@ function tableExists($table){
    $sql  .= " ORDER BY p.id DESC LIMIT ".$db->escape((int)$limit);
    return find_by_sql($sql);
  }
-
+ // Fetch paginated requests with optional search
+function join_request($items_per_page, $offset, $search_term = null) {
+  global $db;
+  
+  $sql = "SELECT r.id, r.item_id, r.request_by, r.quantity, r.dueback_date, r.comments, r.date_request,
+                 p.name, p.media_id, m.file_name AS image
+          FROM requests r
+          LEFT JOIN products p ON p.id = r.item_id  
+          LEFT JOIN media m ON m.id = p.media_id";
+  
+  if ($search_term) {
+      $search_term = $db->escape($search_term);
+      $sql .= " WHERE (p.name LIKE '%$search_term%' OR r.request_by LIKE '%$search_term%')";
+  }
+  
+  $sql .= " ORDER BY r.date_request DESC LIMIT {$items_per_page} OFFSET {$offset}";
+  
+  return find_by_sql($sql);
+}
+// Count total request with optional search
+function count_request($search_term = null) {
+  global $db;
+  $sql = "SELECT COUNT(*) AS total FROM requests r LEFT JOIN products p ON p.id = r.item_id";
+  
+  if ($search_term) {
+      $search_term = $db->escape($search_term);
+      $sql .= " WHERE (p.name LIKE '%$search_term%' OR r.request_by LIKE '%$search_term%')";
+  }
+  
+  $result = find_by_sql($sql);
+  return $result[0]['total'];
+}
 ?>
