@@ -5,7 +5,7 @@ require_once('includes/load.php');
 page_require_level(2);
 
 // Pagination variables
-$items_per_page = 2;
+$items_per_page = 20;
 $current_page = isset($_GET['page']) && $_GET['page'] > 0 ? (int)$_GET['page'] : 1;
 $offset = ($current_page - 1) * $items_per_page;
 
@@ -59,7 +59,9 @@ $offset = ($current_page - 1) * $items_per_page;
                         <tbody>
                             <?php if (isset($_GET['search']) && !empty($search_query) && empty($requests)): ?>
                                 <tr>
-                                    <td colspan="15" class="text-center btn-danger">Nothing Found</td>
+                                    <td colspan="15" class="text-center btn-danger">
+                                        <?php echo "No items found for " . htmlspecialchars($search_query); ?>
+                                    </td>
                                 </tr>
                             <?php elseif (empty($requests)): ?>
                                 <tr>
@@ -84,9 +86,15 @@ $offset = ($current_page - 1) * $items_per_page;
                                         <td class="text-center"><?php echo remove_junk($request['date_request']); ?></td>
                                         <td class="text-center">
                                             <div class="btn-group">
-                                                <a href="approve_item.php?id=<?php echo (int)$request['id'];?>" class="btn btn-info btn-xs" title="Approve" data-toggle="tooltip">
-                                                    <span class="glyphicon glyphicon-thumbs-up"></span>
-                                                </a>
+                                                <button 
+                                                class="btn btn-info btn-xs" 
+                                                title="Approve" 
+                                                data-toggle="modal" 
+                                                data-target="#approveModal"
+                                                onclick="fillModal(<?php echo (int)$request['id']; ?>, '<?php echo remove_junk($request['name']); ?>', '<?php echo remove_junk($request['request_by']); ?>', '<?php echo remove_junk($request['quantity']); ?>')"
+                                                >
+                                                <span class="glyphicon glyphicon-thumbs-up"></span>
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
@@ -95,6 +103,39 @@ $offset = ($current_page - 1) * $items_per_page;
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Approve Modal -->
+<div id="approveModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Approve Item</h4>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="approve_item.php">
+                    <input type="hidden" name="request-id" id="modal-request-id">
+                    
+                    <!-- Item Information (Read-only fields) -->
+                    <div class="form-group">
+                        <label>Item Name:</label>
+                        <input type="text" class="form-control" id="modal-item-name" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Request By:</label>
+                        <input type="text" class="form-control" id="modal-item-request-by" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity:</label>
+                        <input type="number" class="form-control" id="modal-item-quantity" name="quantity" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Approve</button>
+                </form>
             </div>
         </div>
     </div>
@@ -122,6 +163,20 @@ $offset = ($current_page - 1) * $items_per_page;
         <?php endif; ?>
     </ul>
 </div>
+
+<script>
+    function fillModal(id, name, request_by, quantity) {
+        document.getElementById('modal-request-id').value = id;
+        document.getElementById('modal-item-name').value = name;
+        document.getElementById('modal-item-request-by').value = request_by;
+        document.getElementById('modal-item-quantity').value = quantity;
+    }
+    document.querySelector('form').addEventListener('submit', function(event) {
+        if (!confirm("Are you sure you want to approve this item?")) {
+            event.preventDefault();
+        }
+    });
+</script>
 
 <?php include_once('layouts/footer.php'); ?>
 
