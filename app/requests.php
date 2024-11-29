@@ -83,7 +83,7 @@ $offset = ($current_page - 1) * $items_per_page;
                                         <td class="text-center"><?php echo remove_junk($request['quantity']); ?></td>
                                         <td class="text-center"><?php echo remove_junk($request['dueback_date']); ?></td>
                                         <td class="text-center"><?php echo remove_junk($request['comments']); ?></td>
-                                        <td class="text-center"><?php echo remove_junk($request['date_request']); ?></td>
+                                        <td class="text-center"><?php echo read_date($request['date_request']); ?></td>
                                         <td class="text-center">
                                             <div class="btn-group">
                                                 <button 
