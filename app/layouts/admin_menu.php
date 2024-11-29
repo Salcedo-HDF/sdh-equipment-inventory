@@ -55,6 +55,7 @@
     <ul class="nav submenu">
       <li><a href="log_in_out.php">Log In/Log out</a> </li>
       <li><a href="check_in_out.php">Check In/Check Out</a> </li>
+      <li><a href="requests.php">Requests</a> </li>
    </ul>
   </li>
 </ul>
