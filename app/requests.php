@@ -87,13 +87,25 @@ $offset = ($current_page - 1) * $items_per_page;
                                         <td class="text-center">
                                             <div class="btn-group">
                                                 <button 
-                                                class="btn btn-info btn-xs" 
-                                                title="Approve" 
-                                                data-toggle="modal" 
-                                                data-target="#approveModal"
-                                                onclick="fillModal(<?php echo (int)$request['id']; ?>, '<?php echo remove_junk($request['name']); ?>', '<?php echo remove_junk($request['request_by']); ?>', '<?php echo remove_junk($request['quantity']); ?>', '<?php echo remove_junk($request['dueback_date']); ?>', '<?php echo remove_junk($request['comments']); ?>')"
+                                                    class="btn btn-info btn-xs" 
+                                                    title="Approve" 
+                                                    data-toggle="modal" 
+                                                    data-target="#approveModal"
+                                                    data-id="<?php echo (int)$request['id']; ?>"
+                                                    data-name="<?php echo htmlspecialchars($request['name']); ?>"
+                                                    data-request_by="<?php echo htmlspecialchars($request['request_by']); ?>"
+                                                    data-quantity="<?php echo htmlspecialchars($request['quantity']); ?>"
+                                                    data-dueback_date="<?php echo htmlspecialchars($request['dueback_date']); ?>"
+                                                    data-comments="<?php echo htmlspecialchars($request['comments']); ?>"
+                                                    onclick="fillModal(
+                                                        this.getAttribute('data-id'),
+                                                        this.getAttribute('data-name'),
+                                                        this.getAttribute('data-request_by'),
+                                                        this.getAttribute('data-quantity'),
+                                                        this.getAttribute('data-dueback_date')
+                                                    )"
                                                 >
-                                                <span class="glyphicon glyphicon-thumbs-up"></span>
+                                                    <span class="glyphicon glyphicon-thumbs-up"></span>
                                                 </button>
                                             </div>
                                         </td>
@@ -136,7 +148,7 @@ $offset = ($current_page - 1) * $items_per_page;
                     </div>
                     <div class="form-group">
                         <label>Due Back Date:</label>
-                        <input type="text" class="form-control" id="modal-item-dueback-date" readonly>
+                        <input type="date" class="form-control" id="modal-item-dueback-date" name="modal-item-dueback-date">
                     </div>
                     <div class="form-group">
                         <label>Comments:</label>
@@ -174,11 +186,12 @@ $offset = ($current_page - 1) * $items_per_page;
 
 <script>
     function fillModal(id, name, request_by, quantity, dueback_date, comments) {
-        document.getElementById('modal-request-id').value = id;
-        document.getElementById('modal-item-name').value = name;
-        document.getElementById('modal-item-request-by').value = request_by;
-        document.getElementById('modal-item-quantity').value = quantity;
-        document.getElementById('modal-item-dueback-date').value = dueback_date;
+        // Ensure fields are set, fallback to empty strings if undefined
+        document.getElementById('modal-request-id').value = id || '';
+        document.getElementById('modal-item-name').value = name || '';
+        document.getElementById('modal-item-request-by').value = request_by || '';
+        document.getElementById('modal-item-quantity').value = quantity || '';
+        document.getElementById('modal-item-dueback-date').value = dueback_date || '';
     }
     document.querySelector('form').addEventListener('submit', function(event) {
         if (!confirm("Are you sure you want to approve this item?")) {
