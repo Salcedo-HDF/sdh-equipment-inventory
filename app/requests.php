@@ -91,7 +91,7 @@ $offset = ($current_page - 1) * $items_per_page;
                                                 title="Approve" 
                                                 data-toggle="modal" 
                                                 data-target="#approveModal"
-                                                onclick="fillModal(<?php echo (int)$request['id']; ?>, '<?php echo remove_junk($request['name']); ?>', '<?php echo remove_junk($request['request_by']); ?>', '<?php echo remove_junk($request['quantity']); ?>')"
+                                                onclick="fillModal(<?php echo (int)$request['id']; ?>, '<?php echo remove_junk($request['name']); ?>', '<?php echo remove_junk($request['request_by']); ?>', '<?php echo remove_junk($request['quantity']); ?>', '<?php echo remove_junk($request['dueback_date']); ?>', '<?php echo remove_junk($request['comments']); ?>')"
                                                 >
                                                 <span class="glyphicon glyphicon-thumbs-up"></span>
                                                 </button>
@@ -134,6 +134,14 @@ $offset = ($current_page - 1) * $items_per_page;
                         <label>Quantity:</label>
                         <input type="number" class="form-control" id="modal-item-quantity" name="quantity" required>
                     </div>
+                    <div class="form-group">
+                        <label>Due Back Date:</label>
+                        <input type="text" class="form-control" id="modal-item-dueback-date" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Comments:</label>
+                        <textarea class="form-control" name="modal-item-comments"></textarea>
+                    </div>
                     <button type="submit" class="btn btn-success">Approve</button>
                 </form>
             </div>
@@ -165,11 +173,12 @@ $offset = ($current_page - 1) * $items_per_page;
 </div>
 
 <script>
-    function fillModal(id, name, request_by, quantity) {
+    function fillModal(id, name, request_by, quantity, dueback_date, comments) {
         document.getElementById('modal-request-id').value = id;
         document.getElementById('modal-item-name').value = name;
         document.getElementById('modal-item-request-by').value = request_by;
         document.getElementById('modal-item-quantity').value = quantity;
+        document.getElementById('modal-item-dueback-date').value = dueback_date;
     }
     document.querySelector('form').addEventListener('submit', function(event) {
         if (!confirm("Are you sure you want to approve this item?")) {
