@@ -5,7 +5,7 @@
    page_require_level(2);
   
   // Pagination variables
-  $items_per_page = 5;
+  $items_per_page = 20;
   $current_page = isset($_GET['page']) && $_GET['page'] > 0 ? (int)$_GET['page'] : 1;
   $offset = ($current_page - 1) * $items_per_page;
 
