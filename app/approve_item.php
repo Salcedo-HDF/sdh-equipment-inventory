@@ -8,6 +8,8 @@ $request_id = isset($_POST['request-id']) ? (int)$_POST['request-id'] : 0;
 $quantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 0;
 $comments = isset($_POST['modal-item-comments']) ? $db->escape($_POST['modal-item-comments']) : '';
 
+date_default_timezone_set('Asia/Manila');
+
 // Fetch the corresponding request and item details
 $request = find_by_id('requests', $request_id);
 if (!$request) {
@@ -52,9 +54,14 @@ if ($db->query($sql)) {
         // Insert into the check_out table
         $due_back_date = !empty($_POST['modal-item-dueback-date']) ? "'" . remove_junk($db->escape($_POST['modal-item-dueback-date'])) . "'" : "NULL";
         $date_checkout = date("Y-m-d");
+        $check_out_sql = "INSERT INTO logs (item_id, action, user, quantity, action_date) 
+                          VALUES ('{$item_id}', 'Check Out', '{$user_name}', '{$quantity}', '{$date_approval}')";
+        $db->query($check_out_sql); // Execute the check-out insertion
+
+        // Insert into the logs table
         $check_out_sql = "INSERT INTO check_out (item_id, checkout_by, checkout_date, quantity, due_back_date, comments) 
                           VALUES ('{$item_id}', '{$user_name}', '{$date_checkout}', '{$quantity}', {$due_back_date}, '{$comments}')";
-        $db->query($check_out_sql); // Execute the check-out insertion
+        $db->query($check_out_sql); 
 
         $session->msg('s', 'Request approved and item checked out successfully.');
         redirect('requests.php');
