@@ -5,7 +5,7 @@ require_once('includes/load.php');
 page_require_level(1);
 
 // Pagination settings
-$items_per_page = 10; // Number of items per page
+$items_per_page = 20; // Number of items per page
 $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Get current page or default to 1
 $offset = ($current_page - 1) * $items_per_page; // Calculate the offset
 
