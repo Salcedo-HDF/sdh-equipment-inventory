@@ -65,7 +65,7 @@ $offset = ($current_page - 1) * $items_per_page;
                                 </tr>
                             <?php elseif (empty($requests)): ?>
                                 <tr>
-                                    <td colspan="15" class="text-center btn-danger">No Items</td>
+                                    <td colspan="15" class="text-center btn-danger">No request available at the moment</td>
                                 </tr>
                             <?php else: ?>
                                 <?php foreach ($requests as $index => $request): ?>
@@ -193,7 +193,7 @@ $offset = ($current_page - 1) * $items_per_page;
         document.getElementById('modal-item-quantity').value = quantity || '';
         document.getElementById('modal-item-dueback-date').value = dueback_date || '';
     }
-    document.querySelector('form').addEventListener('submit', function(event) {
+    document.querySelector('#approveModal form').addEventListener('submit', function(event) {
         if (!confirm("Are you sure you want to approve this item?")) {
             event.preventDefault();
         }
