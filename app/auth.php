@@ -4,6 +4,8 @@ $req_fields = array('username', 'password');
 $username = remove_junk($_POST['username']);
 $password = remove_junk($_POST['password']);
 
+date_default_timezone_set('Asia/Manila');
+
 if(empty($errors)) {
   $user_id = authenticate($username, $password);
   if($user_id) {
