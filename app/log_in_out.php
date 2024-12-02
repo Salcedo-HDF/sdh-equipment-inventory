@@ -66,7 +66,7 @@ $offset = ($current_page - 1) * $items_per_page;
                                     <td>
                                         <img class="img-avatar img-circle" src="uploads/users/<?php echo $info['image']; ?>" alt="">
                                     </td>
-                                    <td><?php echo remove_junk($info['name']); ?></td>
+                                    <td class="text-center"><?php echo remove_junk($info['name']); ?></td>
                                     <td class="text-center"><?php echo read_date($info['date']); ?></td>
                                     <td class="text-center"><?php echo remove_junk($info['action']); ?></td>
                                 </tr>
