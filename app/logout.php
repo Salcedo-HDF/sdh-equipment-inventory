@@ -1,7 +1,9 @@
 <?php
 require_once('includes/load.php');
 
-$user_id = (int)$session->user_id;
+$user_id = isset($_SESSION['user_id']) ? (int)$_SESSION['user_id'] : 0;
+
+date_default_timezone_set('Asia/Manila');
 
 $date = date('Y-m-d H:i:s'); 
 $action = "Log out";
