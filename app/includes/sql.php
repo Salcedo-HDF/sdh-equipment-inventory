@@ -415,23 +415,6 @@ function tableExists($table){
 
       return find_by_sql($sql);
   }
-  function count_total_users($search_term = '') {
-      global $db;
-
-      // Escape only if there is a search term
-      if ($search_term !== '') {
-          $search_term = $db->escape($search_term);
-      }
-
-      // Build SQL query based on search term
-      $sql = "SELECT COUNT(*) as total FROM users";
-      if ($search_term !== '') {
-          $sql .= " WHERE name LIKE '%$search_term%'";
-      }
-
-      $result = find_by_sql($sql);
-      return $result[0]['total'];
-  }
   function count_logs($search_term) {
     global $db;
     $search_term = $db->escape($search_term);
@@ -584,6 +567,52 @@ function count_requests_log($search_term = null) {
       $sql .= " WHERE (p.name LIKE '%$search_term%' OR r.request_by LIKE '%$search_term%')";
   }
   
+  $result = find_by_sql($sql);
+  return $result[0]['total'];
+}
+// Count total in & out
+function count_inOut($search_term = null) {
+  global $db;
+  $sql = "SELECT COUNT(*) AS total FROM inout_logs i LEFT JOIN users u ON i.user_id = u.id";
+  
+  if ($search_term) {
+      $search_term = $db->escape($search_term);
+      $sql .= " WHERE (u.name LIKE '%$search_term%' OR i.action LIKE '%$search_term%')";
+  }
+  
+  $result = find_by_sql($sql);
+  return $result[0]['total'];
+}
+function join_inOutlogs($items_per_page, $offset, $search_term = null) {
+  global $db;
+  
+  $sql = "SELECT i.id, i.date, i.action, u.name, u.image 
+          FROM inout_logs i
+          LEFT JOIN users u ON u.id = i.user_id";
+  
+  if ($search_term) {
+      $search_term = $db->escape($search_term);
+      $sql .= " WHERE (u.name LIKE '%$search_term%' OR i.action LIKE '%$search_term%')";
+  }
+  
+  $sql .= " ORDER BY i.date DESC LIMIT {$items_per_page} OFFSET {$offset}";
+  
+  return find_by_sql($sql);
+}
+function count_total_users($search_term = '') {
+  global $db;
+
+  // Escape only if there is a search term
+  if ($search_term !== '') {
+      $search_term = $db->escape($search_term);
+  }
+
+  // Build SQL query based on search term
+  $sql = "SELECT COUNT(*) as total FROM users";
+  if ($search_term !== '') {
+      $sql .= " WHERE name LIKE '%$search_term%'";
+  }
+
   $result = find_by_sql($sql);
   return $result[0]['total'];
 }
