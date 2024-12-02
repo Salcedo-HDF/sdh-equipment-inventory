@@ -4,23 +4,26 @@ require_once('includes/load.php');
 // Checkin What level user has permission to view this page
 page_require_level(1);
 
-// Pagination settings
-$items_per_page = 20; // Number of items per page
-$current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Get current page or default to 1
-$offset = ($current_page - 1) * $items_per_page; // Calculate the offset
+// Pagination variables
+$items_per_page = 20;
+$current_page = isset($_GET['page']) && $_GET['page'] > 0 ? (int)$_GET['page'] : 1;
+$offset = ($current_page - 1) * $items_per_page;
 
-// Check if there's a search query
-$search_query = '';
-if (isset($_GET['search'])) {
-    $search_query = $_GET['search'];
-    $infos = search_user($search_query, $items_per_page, $current_page);
-} else {
-    $infos = user_table($items_per_page, $current_page);
-}
+// Fetch total items or search results
+$search_query = isset($_GET['search']) ? trim($_GET['search']) : '';
+$total_items = count_inOut($search_query);
 
-// Count total users for pagination, passing search query if it exists
-$total_users = count_total_users($search_query);
-$total_pages = ceil($total_users / $items_per_page);
+// Pagination calculation
+$total_pages = max(ceil($total_items / $items_per_page), 1);
+$current_page = min($current_page, $total_pages);
+
+// Fetch paginated products
+$infos = join_inOutlogs($items_per_page, $offset, $search_query);
+
+// Ensure at least one page exists
+$total_pages = max(ceil($total_items / $items_per_page), 1);
+$current_page = min($current_page, $total_pages);
+$offset = ($current_page - 1) * $items_per_page;
 ?>
 <?php include_once('layouts/header.php'); ?>
 <div class="row">
@@ -43,8 +46,8 @@ $total_pages = ceil($total_users / $items_per_page);
                             <th class="text-center" style="width: 50px;">#</th>
                             <th class="text-center">Image</th>
                             <th class="text-center">Name</th>
-                            <th class="text-center">User Level</th>
-                            <th class="text-center">Last Log In</th>
+                            <th class="text-center">Date</th>
+                            <th class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -64,8 +67,8 @@ $total_pages = ceil($total_users / $items_per_page);
                                         <img class="img-avatar img-circle" src="uploads/users/<?php echo $info['image']; ?>" alt="">
                                     </td>
                                     <td><?php echo remove_junk($info['name']); ?></td>
-                                    <td class="text-center"><?php echo remove_junk($info['user_level']); ?></td>
-                                    <td class="text-center"><?php echo read_date($info['last_login']); ?></td>
+                                    <td class="text-center"><?php echo read_date($info['date']); ?></td>
+                                    <td class="text-center"><?php echo remove_junk($info['action']); ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         <?php endif; ?>
