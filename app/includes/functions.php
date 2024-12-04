@@ -60,14 +60,14 @@ function display_msg($msg =''){
 /*--------------------------------------------------------------*/
 /* Function for redirect
 /*--------------------------------------------------------------*/
-function redirect($url, $permanent = false)
-{
-    if (headers_sent() === false)
-    {
-      header('Location: ' . $url, true, ($permanent === true) ? 301 : 302);
-    }
-
-    exit();
+function redirect($url, $permanent = false) {
+  if(headers_sent()) {
+    echo "<script>window.location.href='$url';</script>";
+    exit;
+  } else {
+    header("Location: $url", true, $permanent ? 301 : 302);
+    exit;
+  }
 }
 /*--------------------------------------------------------------*/
 /* Function for find out total saleing price, buying price and profit
