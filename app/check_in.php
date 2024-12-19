@@ -167,7 +167,14 @@ if (isset($_POST['check_in'])) {
                       <span class="input-group-addon">
                       <i class="glyphicon glyphicon-map-marker"></i>
                       </span>
-                      <input type="text" class="form-control" name="where-found" placeholder="Where Found?">
+                      <select class="form-control" name="where-found">
+                        <option value="">Select Where Found</option>
+                        <option value="Old Storage Next to Isolation Room">Old Storage Next to Isolation Room</option>
+                        <option value="Business Office">Business Office</option>
+                        <option value="Chief of Hospital Office">Chief of Hospital Office</option>
+                        <option value="2nd Floor">2nd Floor</option>
+                        <option value="N/A">N/A</option>
+                      </select>
                     </div>
                   </div>
 
@@ -193,7 +200,13 @@ if (isset($_POST['check_in'])) {
                     <span class="input-group-addon">
                     <i class="glyphicon glyphicon-home"></i>
                     </span>
-                    <input type="text" class="form-control" name="checkin-room" placeholder="Checked In Room">
+                    <select class="form-control" name="checkin-room">
+                      <option value="">Select Check in Room</option>
+                      <option value="Outside Storage">Outside Storage</option>
+                      <option value="Inside Storage">Inside Storage</option>
+                      <option value="Chapel">Chapel</option>
+                      <option value="N/A">N/A</option>
+                    </select>
                   </div>
                 </div>
 
