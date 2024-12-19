@@ -161,7 +161,9 @@ $offset = ($current_page - 1) * $items_per_page;
         <!-- Individual Page Numbers -->
         <?php for ($i = $start_page; $i <= $end_page; $i++): ?>
             <li <?php if ($i == $current_page) echo 'class="active"'; ?>>
-                <a href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+            <a href="?page=<?php echo $i; ?><?php if (!empty($search_query)) echo '&search=' . urlencode($search_query); ?>">
+                    <?php echo $i; ?>
+                </a>
             </li>
         <?php endfor; ?>
 
