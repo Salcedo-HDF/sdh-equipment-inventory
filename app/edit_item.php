@@ -227,7 +227,6 @@ if(!$item){
                     <span class="input-group-addon">
                     <i class="glyphicon glyphicon-home"></i>
                     </span>
-                    <input type="text" class="form-control" name="checkin-room" value="<?php echo remove_junk($item['checkin_room']); ?>" placeholder="Checked In Room">
                     <select class="form-control" name="checkin-room">
                       <option value="">Select Check in Room</option>
                       <option value="Outside Storage" <?php if($item['checkin_room'] === 'Outside Storage'): echo "selected"; endif; ?>>Outside Storage</option>
