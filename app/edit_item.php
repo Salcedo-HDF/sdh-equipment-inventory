@@ -194,7 +194,14 @@ if(!$item){
                       <span class="input-group-addon">
                       <i class="glyphicon glyphicon-map-marker"></i>
                       </span>
-                      <input type="text" class="form-control" name="where-found" value="<?php echo remove_junk($item['where_found']); ?>" placeholder="Where Found?">
+                      <select class="form-control" name="where-found">
+                        <option value="">Select Where Found</option>
+                        <option value="Old Storage Next to Isolation Room" <?php if($item['where_found'] === 'Old Storage Next to Isolation Room'): echo "selected"; endif; ?>>Old Storage Next to Isolation Room</option>
+                        <option value="Business Office" <?php if($item['where_found'] === "Business Office"): echo "selected"; endif; ?>>Business Office</option>
+                        <option value="Chief of Hospital Office" <?php if($item['where_found'] === 'Chief of Hospital Office'): echo "selected"; endif; ?>>Chief of Hospital Office</option>
+                        <option value="2nd Floor" <?php if($item['where_found'] === '2nd Floor'): echo "selected"; endif; ?>>2nd Floor</option>
+                        <option value="N/A" <?php if($item['where_found'] === 'N/A'): echo "selected"; endif; ?>>N/A</option>
+                      </select>
                     </div>
                   </div>
 
@@ -221,6 +228,13 @@ if(!$item){
                     <i class="glyphicon glyphicon-home"></i>
                     </span>
                     <input type="text" class="form-control" name="checkin-room" value="<?php echo remove_junk($item['checkin_room']); ?>" placeholder="Checked In Room">
+                    <select class="form-control" name="checkin-room">
+                      <option value="">Select Check in Room</option>
+                      <option value="Outside Storage" <?php if($item['checkin_room'] === 'Outside Storage'): echo "selected"; endif; ?>>Outside Storage</option>
+                      <option value="Inside Storage" <?php if($item['checkin_room'] === "Business Office"): echo "selected"; endif; ?>>Business Office</option>
+                      <option value="Chapel" <?php if($item['checkin_room'] === 'Chapel'): echo "selected"; endif; ?>>Chapel</option>
+                      <option value="N/A" <?php if($item['checkin_room'] === 'N/A'): echo "selected"; endif; ?>>N/A</option>
+                    </select>
                   </div>
                 </div>
 
