@@ -26,7 +26,7 @@ if (isset($_POST['check_in'])) {
     $i_description = remove_junk($db->escape($_POST['item-description']));
     $i_status = remove_junk($db->escape($_POST['item-status']));
     $i_where_found = remove_junk($db->escape($_POST['where-found']));
-    $i_checkin_date = remove_junk($db->escape($_POST['checkin-date']));
+    $i_checkin_date = !empty($_POST['checkin-date']) ? "'" . remove_junk($db->escape($_POST['checkin-date'])) . "'" : "NULL";
     $i_checkin_room = remove_junk($db->escape($_POST['checkin-room']));
     $i_checkin_location = remove_junk($db->escape($_POST['checkin-location']));
     $i_checkin_location_barcode = remove_junk($db->escape($_POST['checkin-location-barcode']));
@@ -42,7 +42,7 @@ if (isset($_POST['check_in'])) {
 
     // Insert into products table
     $query = "INSERT INTO products (name, quantity, description, status, where_found, checkin_by, checkin_date, checkin_room, checkin_location, checkin_location_barcode, comments, categorie_id, media_id, date, action) ";
-    $query .= "VALUES ('{$i_name}', '{$i_qty}', '{$i_description}', '{$i_status}', '{$i_where_found}', '{$user_name}', '{$i_checkin_date}', '{$i_checkin_room}', '{$i_checkin_location}', '{$i_checkin_location_barcode}', '{$i_comments}', '{$i_cat}', '{$media_id}', '{$date}', '{$action}') ";
+    $query .= "VALUES ('{$i_name}', '{$i_qty}', '{$i_description}', '{$i_status}', '{$i_where_found}', '{$user_name}', {$i_checkin_date}, '{$i_checkin_room}', '{$i_checkin_location}', '{$i_checkin_location_barcode}', '{$i_comments}', '{$i_cat}', '{$media_id}', '{$date}', '{$action}') ";
 
     if ($db->query($query)) {
         // Get the last inserted item_id
@@ -177,7 +177,7 @@ if (isset($_POST['check_in'])) {
                       <span class="input-group-addon">
                       <i class="glyphicon glyphicon-user"></i>
                       </span>
-                      <input type="Date" class="form-control" name="checkin-date" placeholder="Checked In Date" required>
+                      <input type="Date" class="form-control" name="checkin-date" placeholder="Checked In Date">
                     </div>
                   </div>
 
