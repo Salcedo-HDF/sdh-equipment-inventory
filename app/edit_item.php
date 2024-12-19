@@ -22,7 +22,7 @@ if(!$item){
     $p_description = isset($_POST['item-description']) ? remove_junk($db->escape($_POST['item-description'])) : null;
     $i_status = isset($_POST['item-status']) ? remove_junk($db->escape($_POST['item-status'])) : null;
     $i_where_found = isset($_POST['where-found']) ? remove_junk($db->escape($_POST['where-found'])) : null;
-    $i_checkin_date = isset($_POST['checkin-date']) ? remove_junk($db->escape($_POST['checkin-date'])) : null;
+    $i_checkin_date = !empty($_POST['checkin-date']) ? "'" . remove_junk($db->escape($_POST['checkin-date'])) . "'" : "NULL";
     $i_checkin_room = isset($_POST['checkin-room']) ? remove_junk($db->escape($_POST['checkin-room'])) : null;
     $i_checkin_location = isset($_POST['checkin-location']) ? remove_junk($db->escape($_POST['checkin-location'])) : null;
     $i_checkin_location_barcode = isset($_POST['checkin-location-barcode']) ? remove_junk($db->escape($_POST['checkin-location-barcode'])) : null;
@@ -51,7 +51,7 @@ if(!$item){
     }
     
     if (!is_null($i_checkin_date)) {
-        $query .= ", checkin_date ='{$i_checkin_date}'";
+        $query .= ", checkin_date ={$i_checkin_date}";
     }
     
     if (!is_null($i_checkin_room)) {
