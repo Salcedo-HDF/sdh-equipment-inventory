@@ -46,7 +46,7 @@
       </div>
     </a>
 	
-    <a href="product.php" style="color:black;">
+    <a href="item.php" style="color:black;">
       <div class="col-md-4">
         <div class="panel clearfix">
           <div class="panel-icon pull-left bg-blue2">
