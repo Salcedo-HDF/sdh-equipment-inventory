@@ -616,4 +616,18 @@ function count_total_users($search_term = '') {
   $result = find_by_sql($sql);
   return $result[0]['total'];
 }
+function get_paginated_employee($items_per_page, $offset, $search_term = null) {
+  global $db;
+  
+  $sql = "SELECT * FROM employee";
+  
+  if ($search_term) {
+      $search_term = $db->escape($search_term);
+      $sql .= " WHERE (name LIKE '%$search_term%')";
+  }
+  
+  $sql .= " ORDER BY id DESC LIMIT {$items_per_page} OFFSET {$offset}";
+  
+  return find_by_sql($sql);
+}
 ?>
