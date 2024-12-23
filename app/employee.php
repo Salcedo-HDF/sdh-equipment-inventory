@@ -47,10 +47,10 @@ $offset = ($current_page - 1) * $items_per_page;
                 <div class="pull-right">
                     <a href="check_in.php" class="btn btn-primary">Check in New Item</a>
                 </div>
-                <form action="item.php" method="GET" class="form-inline pull-left">
+                <form action="employee.php" method="GET" class="form-inline pull-left">
                     <input type="text" name="search" class="form-control" placeholder="Search item..." value="<?php echo htmlspecialchars($search_query); ?>">
                     <button type="submit" class="btn btn-primary">Search</button>
-                    <a href="item.php" class="btn btn-danger">Reset</a>
+                    <a href="employee.php" class="btn btn-danger">Reset</a>
                 </form>
             </div>
             <div class="panel-body">
@@ -58,9 +58,9 @@ $offset = ($current_page - 1) * $items_per_page;
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th class="text-center"> # </th>
+                                <th class="text-center" style="width: 80px;"> # </th>
                                 <th class="text-center"> Employee Name </th>
-                                <th class="text-center"> Actions </th>
+                                <th class="text-center" style="width: 120px;"> Actions </th>
                             </tr>
                         </thead>
                         <tbody>
