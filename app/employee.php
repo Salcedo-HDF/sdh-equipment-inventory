@@ -28,7 +28,7 @@ $start_page = ($current_set - 1) * $pages_per_set + 1;
 $end_page = min($start_page + $pages_per_set - 1, $total_pages);
 
 // Fetch paginated products
-$products = get_paginated_products($items_per_page, $offset, $search_query);
+$products = get_paginated_employee($items_per_page, $offset, $search_query);
 
 // Ensure at least one page exists
 $total_pages = max(ceil($total_items / $items_per_page), 1);
