@@ -7,7 +7,7 @@
   </li>
   <li>
     <a href="#" class="submenu-toggle">
-      <i class="glyphicon glyphicon-list"></i>
+      <i class="glyphicon glyphicon-plus"></i>
       <span>Check In</span>
     </a>
     <ul class="nav submenu">
@@ -17,13 +17,19 @@
   </li>
   <li>
     <a href="#" class="submenu-toggle">
-      <i class="glyphicon glyphicon-list"></i>
+      <i class="glyphicon glyphicon-minus"></i>
       <span>Check Out</span>
     </a>
     <ul class="nav submenu">
        <li><a href="checkout_items.php">List of Check Out Items</a> </li>
        <li><a href="check_out.php">Check Out an Item</a> </li>
    </ul>
+  </li>
+  <li>
+    <a href="employee.php" >
+      <i class="glyphicon glyphicon-th-list"></i>
+      <span>Employees</span>
+    </a>
   </li>
   <li>
     <a href="categorie.php" >
