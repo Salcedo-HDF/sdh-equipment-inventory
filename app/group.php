@@ -52,8 +52,9 @@
                 <a href="edit_group.php?id=<?php echo (int)$a_group['id'];?>" class="btn btn-xs btn-warning" data-toggle="tooltip" title="Edit">
                   <i class="glyphicon glyphicon-pencil"></i>
                </a>
-                <a href="delete_group.php?id=<?php echo (int)$a_group['id'];?>" class="btn btn-xs btn-danger" data-toggle="tooltip" title="Remove">
-                  <i class="glyphicon glyphicon-remove"></i>
+                <a href="javascript:void(0);" class="btn btn-danger btn-xs" title="Remove" data-toggle="tooltip" 
+                    onclick="confirmDelete(<?php echo (int)$a_group['id']; ?>);">
+                    <span class="glyphicon glyphicon-remove"></span>
                 </a>
                 </div>
             </td>
@@ -65,4 +66,13 @@
     </div>
   </div>
 </div>
-  <?php include_once('layouts/footer.php'); ?>
+<?php include_once('layouts/footer.php'); ?>
+
+<script>
+    function confirmDelete(itemId) {
+        const userConfirmed = confirm("Are you sure you want to remove this group?");
+        if (userConfirmed) {
+            window.location.href = `delete_group.php?id=${itemId}`;
+        }
+    }
+</script>  
