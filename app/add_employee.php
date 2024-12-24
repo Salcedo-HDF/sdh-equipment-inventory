@@ -13,8 +13,14 @@ if (!isset($_SESSION['user_id'])) {
 if (isset($_POST['add_employee'])) {
     $e_name = remove_junk($db->escape($_POST['employee-name']));
 
-    $query = "INSERT INTO employee (name) ";
-    $query .= "VALUES ('{$e_name}') ";
+    $query = "INSERT INTO employee (name) VALUES ('{$e_name}')";
+
+    if ($db->query($query)) {
+        $session->msg('s', "Employee added successfully!");
+        redirect('employee.php', false);
+    } else {
+        redirect('employee.php', false);
+    }
 }
 ?>
 <?php include_once('layouts/header.php'); ?>
