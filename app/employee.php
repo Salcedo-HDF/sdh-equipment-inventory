@@ -11,7 +11,7 @@ $offset = ($current_page - 1) * $items_per_page;
 
 // Fetch total items or search results
 $search_query = isset($_GET['search']) ? trim($_GET['search']) : '';
-$total_items = count_items($search_query);
+$total_items = count_employee($search_query);
 
 // Pagination calculation
 $total_pages = max(ceil($total_items / $items_per_page), 1);
