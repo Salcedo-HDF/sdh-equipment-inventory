@@ -3,6 +3,8 @@
   require_once('includes/load.php');
   // Checkin What level user has permission to view this page
    page_require_level(2);
+
+   $all_employee = find_all('employee');
   
   // Pagination variables
   $items_per_page = 20;
@@ -149,7 +151,13 @@
             <!-- Checkout Details -->
             <div class="form-group">
               <label>Check Out By:</label>
-              <input type="text" class="form-control" name="checkout-by" required>
+              <select class="form-control" name="checkout-by" required>
+                <option value="">Select Employee</option>
+              <?php  foreach ($all_employee as $employee): ?>
+                <option value="<?php echo $employee['name'] ?>">
+                  <?php echo $employee['name'] ?></option>
+              <?php endforeach; ?>
+              </select>
             </div>
             <div class="form-group">
               <label>Check Out Date:</label>
