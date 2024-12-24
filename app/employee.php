@@ -45,7 +45,7 @@ $offset = ($current_page - 1) * $items_per_page;
         <div class="panel panel-default">
             <div class="panel-heading clearfix">
                 <div class="pull-right">
-                    <a href="check_in.php" class="btn btn-primary">Add New Employee</a>
+                    <a href="add_employee.php" class="btn btn-primary">Add New Employee</a>
                 </div>
                 <form action="employee.php" method="GET" class="form-inline pull-left">
                     <input type="text" name="search" class="form-control" placeholder="Search item..." value="<?php echo htmlspecialchars($search_query); ?>">
