@@ -27,8 +27,8 @@ $current_set = ceil($current_page / $pages_per_set);
 $start_page = ($current_set - 1) * $pages_per_set + 1;
 $end_page = min($start_page + $pages_per_set - 1, $total_pages);
 
-// Fetch paginated products
-$products = get_paginated_employee($items_per_page, $offset, $search_query);
+// Fetch paginated employees
+$employees = get_paginated_employee($items_per_page, $offset, $search_query);
 
 // Ensure at least one page exists
 $total_pages = max(ceil($total_items / $items_per_page), 1);
@@ -64,24 +64,25 @@ $offset = ($current_page - 1) * $items_per_page;
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if (isset($_GET['search']) && !empty($search_query) && empty($products)): ?>
+                            <?php if (isset($_GET['search']) && !empty($search_query) && empty($employees)): ?>
                                 <tr>
                                     <td colspan="15" class="text-center btn-danger">Nothing Found</td>
                                 </tr>
-                            <?php elseif (empty($products)): ?>
+                            <?php elseif (empty($employees)): ?>
                                 <tr>
                                     <td colspan="15" class="text-center btn-danger">No Employee</td>
                                 </tr>
                             <?php else: ?>
-                                <?php foreach ($products as $index => $product): ?>
+                                <?php foreach ($employees as $index => $employee): ?>
                                     <tr>
                                         <td class="text-center"><?php echo $offset + $index + 1; ?></td>
-                                        <td><?php echo remove_junk($product['name']); ?></td><td class="text-center">
+                                        <td><?php echo remove_junk($employee['name']); ?></td><td class="text-center">
                                             <div class="btn-group">
-                                                <a href="edit_employee.php?id=<?php echo (int)$product['id'];?>" class="btn btn-info btn-xs" title="Edit" data-toggle="tooltip">
+                                                <a href="edit_employee.php?id=<?php echo (int)$employee['id'];?>" class="btn btn-info btn-xs" title="Edit" data-toggle="tooltip">
                                                     <span class="glyphicon glyphicon-edit"></span>
                                                 </a>
-                                                <a href="delete_employee.php?id=<?php echo (int)$product['id'];?>" class="btn btn-danger btn-xs" title="Delete" data-toggle="tooltip">
+                                                <a href="javascript:void(0);" class="btn btn-danger btn-xs" title="Delete" data-toggle="tooltip" 
+                                                    onclick="confirmDelete(<?php echo (int)$employee['id']; ?>);">
                                                     <span class="glyphicon glyphicon-trash"></span>
                                                 </a>
                                             </div>
@@ -166,6 +167,16 @@ $offset = ($current_page - 1) * $items_per_page;
 </div>
 
 <?php include_once('layouts/footer.php'); ?>
+
+<script>
+    function confirmDelete(itemId) {
+        const userConfirmed = confirm("Are you sure you want to delete this employee?");
+        if (userConfirmed) {
+            // Redirect to delete_employee.php with the item ID
+            window.location.href = `delete_employee.php?id=${itemId}`;
+        }
+    }
+</script>
 
 <style>
     .table-responsive {
