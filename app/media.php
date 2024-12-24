@@ -85,8 +85,9 @@
                     <?php echo $media_file['file_type'];?>
                   </td>
                   <td class="text-center">
-                    <a href="delete_media.php?id=<?php echo (int) $media_file['id'];?>" class="btn btn-danger btn-xs" title="Delete">
-                      <span class="glyphicon glyphicon-trash"></span>
+                    <a href="javascript:void(0);" class="btn btn-danger btn-xs" title="Delete" data-toggle="tooltip" 
+                        onclick="confirmDelete(<?php echo (int)$media_file['id']; ?>);">
+                        <span class="glyphicon glyphicon-trash"></span>
                     </a>
                   </td>
                 </tr>
@@ -125,3 +126,12 @@
   </div>
 
 <?php include_once('layouts/footer.php'); ?>
+
+<script>
+    function confirmDelete(itemId) {
+        const userConfirmed = confirm("Are you sure you want to delete this employee?");
+        if (userConfirmed) {
+            window.location.href = `delete_media.php?id=${itemId}`;
+        }
+    }
+</script>
