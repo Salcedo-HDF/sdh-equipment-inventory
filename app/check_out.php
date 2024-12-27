@@ -152,7 +152,7 @@
             <div class="form-group">
               <label>Check Out By:</label>
               <select class="form-control" name="checkout-by" required>
-                <option value="">Select Employee</option>
+                <option value="">Select</option>
               <?php  foreach ($all_employee as $employee): ?>
                 <option value="<?php echo $employee['name'] ?>">
                   <?php echo $employee['name'] ?></option>
