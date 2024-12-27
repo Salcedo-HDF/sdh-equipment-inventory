@@ -107,6 +107,17 @@ $offset = ($current_page - 1) * $items_per_page;
                                                 >
                                                     <span class="glyphicon glyphicon-thumbs-up"></span>
                                                 </button>
+
+                                                <form method="POST" action="disapprove_item.php" style="display: inline;">
+                                                    <input type="hidden" name="request_id" value="<?php echo (int)$request['id']; ?>">
+                                                    <button 
+                                                        type="submit" 
+                                                        class="btn btn-danger btn-xs" 
+                                                        title="Disapprove" 
+                                                        onclick="return confirm('Are you sure you want to disapprove this request?');">
+                                                        <span class="glyphicon glyphicon-thumbs-down"></span>
+                                                    </button>
+                                                </form>
                                             </div>
                                         </td>
                                     </tr>
