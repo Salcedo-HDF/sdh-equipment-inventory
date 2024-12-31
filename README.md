@@ -15,7 +15,6 @@ The **Salcedo Doctor's Hospital Equipment Inventory System** is a native PHP-bas
    git clone https://github.com/ambo18/sdh-equipment-inventory.git  
    cd sdh-equipment-inventory  
 
-2. Start the docker containers:
+2. Build the docker containers:
     ```bash
     docker-compose build
-    
