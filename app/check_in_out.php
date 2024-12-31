@@ -17,6 +17,16 @@ $total_items = isset($total_items_data) ? (int)$total_items_data : 0;
 $total_pages = max(ceil($total_items / $items_per_page), 1);
 $current_page = min($current_page, $total_pages);
 
+// Define the number of pages to display at a time
+$pages_per_set = 10;
+
+// Calculate the current set of pages
+$current_set = ceil($current_page / $pages_per_set);
+
+// Calculate the start and end pages for the current set
+$start_page = ($current_set - 1) * $pages_per_set + 1;
+$end_page = min($start_page + $pages_per_set - 1, $total_pages);
+
 // Fetch paginated products
 $logs = join_logs_table($items_per_page, $offset, $search_query);
 
