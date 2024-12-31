@@ -22,4 +22,4 @@ The **Salcedo Doctor's Hospital Equipment Inventory System** is a native PHP-bas
     ```bash
     docker-compose up -d
 4. Access the system
-    Open your browser and navigate to http://localhost to start using the inventory system.
+    - Open your browser and navigate to http://localhost:8080 to start using the inventory system.
