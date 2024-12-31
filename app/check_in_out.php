@@ -91,23 +91,68 @@ $offset = ($current_page - 1) * $items_per_page;
 <!-- Pagination Controls -->
 <div class="pagination-controls text-center">
     <ul class="pagination">
-        <?php if ($current_page > 1): ?>
-            <li><a href="?page=<?php echo $current_page - 1 . (isset($search_query) ? "&search=" . urlencode($search_query) : ""); ?>">Previous</a></li>
+
+        <!-- Previous Set Button -->
+        <?php if ($current_set > 1): ?>
+            <li>
+                <a href="?page=<?php echo $start_page - $pages_per_set . (isset($search_query) ? "&search=" . urlencode($search_query) : ""); ?>">
+                    &laquo;
+                </a>
+            </li>
         <?php else: ?>
-            <li class="disabled"><span>Previous</span></li>
+            <li class="disabled">
+                <span>&laquo;</span>
+            </li>
         <?php endif; ?>
 
-        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+        <!-- Previous Button -->
+        <?php if ($current_page > 1): ?>
+            <li>
+                <a href="?page=<?php echo $current_page - 1 . (isset($search_query) ? "&search=" . urlencode($search_query) : ""); ?>">
+                    Previous
+                </a>
+            </li>
+        <?php else: ?>
+            <li class="disabled">
+                <span>Previous</span>
+            </li>
+        <?php endif; ?>
+
+        <!-- Individual Page Numbers -->
+        <?php for ($i = $start_page; $i <= $end_page; $i++): ?>
             <li <?php if ($i == $current_page) echo 'class="active"'; ?>>
-                <a href="?page=<?php echo $i . (isset($search_query) ? "&search=" . urlencode($search_query) : ""); ?>"><?php echo $i; ?></a>
+            <a href="?page=<?php echo $i; ?><?php if (!empty($search_query)) echo '&search=' . urlencode($search_query); ?>">
+                    <?php echo $i; ?>
+                </a>
             </li>
         <?php endfor; ?>
 
+        <!-- Next Button -->
         <?php if ($current_page < $total_pages): ?>
-            <li><a href="?page=<?php echo $current_page + 1 . (isset($search_query) ? "&search=" . urlencode($search_query) : ""); ?>">Next</a></li>
+            <li>
+                <a href="?page=<?php echo $current_page + 1 . (isset($search_query) ? "&search=" . urlencode($search_query) : ""); ?>">
+                    Next
+                </a>
+            </li>
         <?php else: ?>
-            <li class="disabled"><span>Next</span></li>
+            <li class="disabled">
+                <span>Next</span>
+            </li>
         <?php endif; ?>
+
+        <!-- Next Set Button -->
+        <?php if ($end_page < $total_pages): ?>
+            <li>
+                <a href="?page=<?php echo $start_page + $pages_per_set . (isset($search_query) ? "&search=" . urlencode($search_query) : ""); ?>">
+                     &raquo;
+                </a>
+            </li>
+        <?php else: ?>
+            <li class="disabled">
+                <span>&raquo;</span>
+            </li>
+        <?php endif; ?>
+
     </ul>
 </div>
 
