@@ -16,3 +16,6 @@ The **Salcedo Doctor's Hospital Equipment Inventory System** is a native PHP-bas
    cd sdh-equipment-inventory  
 
 2. Start the docker containers:
+    ```bash
+    docker-compose build
+    
