@@ -1,6 +1,6 @@
 # Salcedo Doctor's Hospital Equipment Inventory System  
 
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?style=flat&logo=github)](https://github.com/ambo18/sdh-equipment-inventory)  
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?style=flat&logo=github)](https://github.com/Salcedo-HDF/sdh-equipment-inventory)  
 
 The **Salcedo Doctor's Hospital Equipment Inventory System** is a native PHP-based application designed to manage and track hospital equipment efficiently. The system runs using Docker, ensuring seamless deployment and operation.  
 
@@ -12,7 +12,7 @@ The **Salcedo Doctor's Hospital Equipment Inventory System** is a native PHP-bas
 
 1. Clone the repository:  
    ```bash  
-   git clone https://github.com/r-jheltandugon/sdh-equipment-inventory.git  
+   git clone https://github.com/Salcedo-HDF/sdh-equipment-inventory.git  
    cd sdh-equipment-inventory  
 
 2. Build the docker containers:
