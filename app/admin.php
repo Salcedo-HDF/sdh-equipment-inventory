@@ -112,10 +112,10 @@ $all_products = find_all('products');
                     <thead>
                         <tr>
                             <th>Item Name</th>
-                            <th>Description</th>
-                            <th>Stocks</th>
-                            <th>Check-in Room</th>
-                            <th>Check-in Location</th>
+                            <th class="text-center">Description</th>
+                            <th class="text-center">Stocks</th>
+                            <th class="text-center">Check-in Room</th>
+                            <th class="text-center">Check-in Location</th>
                         </tr>
                     </thead>
                     <tbody>
