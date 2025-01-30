@@ -183,7 +183,6 @@ document.getElementById("searchInput").addEventListener("keyup", function() {
 
   /* Styling for the table when scrolling */
   #stockTable th, #stockTable td {
-      text-align: center;
       padding: 8px;
   }
 
