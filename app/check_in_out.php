@@ -57,9 +57,11 @@ $offset = ($current_page - 1) * $items_per_page;
                                 <th class="text-center" style="width: 50px;">#</th>
                                 <th class="text-center"> Photo</th>
                                 <th class="text-center"> Item Name </th>
+                                <th class="text-center"> Description </th>
                                 <th class="text-center"> Person </th>
                                 <th class="text-center"> Quantity </th>
                                 <th class="text-center"> Date Action </th>
+                                <th class="text-center"> Comments </th>
                                 <th class="text-center"> Action </th>
                             </tr>
                         </thead>
@@ -84,9 +86,11 @@ $offset = ($current_page - 1) * $items_per_page;
                                             <?php endif; ?>
                                         </td>
                                         <td><?php echo remove_junk($log['name']); ?></td>
+                                        <td><?php echo remove_junk($log['description']); ?></td>
                                         <td class="text-center"><?php echo remove_junk($log['user']); ?></td>
                                         <td class="text-center"><?php echo remove_junk($log['quantity']); ?></td>
                                         <td class="text-center"><?php echo read_date($log['action_date']); ?></td>
+                                        <td><?php echo read_date($log['comments']); ?></td>
                                         <td class="text-center"><?php echo remove_junk($log['action']); ?></td>
                                 <?php endforeach; ?>
                             <?php endif; ?>
