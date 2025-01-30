@@ -115,7 +115,7 @@ usort($all_products, function($a, $b) {
                 <table class="table table-bordered" id="stockTable">
                     <thead>
                         <tr>
-                            <th onclick="sortTable(0)">Item Name</th>
+                            <th class="text-center" onclick="sortTable(0)">Item Name</th>
                             <th class="text-center">Description</th>
                             <th class="text-center" onclick="sortTable(2)">Stocks</th>
                             <th>Check-in Room</th>
