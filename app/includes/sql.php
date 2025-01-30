@@ -442,7 +442,7 @@ function tableExists($table){
   function join_logs_table($items_per_page, $offset, $search_term = null) {
     global $db;
     
-    $sql  = "SELECT l.id, l.action, l.user, l.quantity, l.action_date, p.name, p.media_id, ";
+    $sql  = "SELECT l.id, l.action, l.user, l.quantity, l.action_date, l.comments, p.name, p.description, p.media_id, ";
     $sql .= "m.file_name AS image ";
     $sql .= "FROM logs l ";
     $sql .= "LEFT JOIN products p ON l.item_id = p.id ";
