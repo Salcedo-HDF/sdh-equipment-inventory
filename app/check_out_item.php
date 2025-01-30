@@ -46,12 +46,12 @@ $user_name = ($user_result && $db->num_rows($user_result) > 0) ? $db->fetch_asso
                     <table class="table table-bordered" id="items-table">
                         <thead>
                             <tr>
-                                <th>Item Name</th>
-                                <th>Description</th>
-                                <th>Stocks</th>
-                                <th>Check-in Room</th>
-                                <th>Check-in Location</th>
-                                <th>Action</th>
+                                <th class="text-center">Item Name</th>
+                                <th class="text-center">Description</th>
+                                <th class="text-center">Stocks</th>
+                                <th class="text-center">Check-in Room</th>
+                                <th class="text-center">Check-in Location</th>
+                                <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -59,7 +59,7 @@ $user_name = ($user_result && $db->num_rows($user_result) > 0) ? $db->fetch_asso
                                 <tr class="item-row">
                                     <td><?php echo $product['name']; ?></td>
                                     <td><?php echo $product['description']; ?></td>
-                                    <td><?php echo $product['quantity']; ?></td>
+                                    <td class="text-center"><?php echo $product['quantity']; ?></td>
                                     <td><?php echo $product['checkin_room']; ?></td>
                                     <td><?php echo $product['checkin_location']; ?></td>
                                     <td>
@@ -84,9 +84,9 @@ $user_name = ($user_result && $db->num_rows($user_result) > 0) ? $db->fetch_asso
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Item Name</th>
-                                <th>Quantity</th>
-                                <th>Action</th>
+                                <th class="text-center">Item Name</th>
+                                <th class="text-center">Quantity</th>
+                                <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody id="selected-items">
@@ -143,8 +143,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 var row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${itemName}</td>
-                    <td>${quantity}</td>
-                    <td><button class="btn btn-danger btn-sm remove-item" data-id="${itemId}">Remove</button></td>
+                    <td class="text-center">${quantity}</td>
+                    <td class="text-center"><button class="btn btn-danger btn-sm remove-item" data-id="${itemId}">Remove</button></td>
                 `;
                 document.getElementById('selected-items').appendChild(row);
 
