@@ -11,10 +11,9 @@
  $c_user          = count_by_id('users');
  $recent_products = find_recent_product_added(5);
 
-// Fetch all products and sort them alphabetically by name
 $all_products = find_all('products');
 usort($all_products, function($a, $b) {
-    return strcmp($a['name'], $b['name']);
+    return strcmp($a['name'], $b['name']); 
 });
 ?>
 
@@ -115,9 +114,9 @@ usort($all_products, function($a, $b) {
                 <table class="table table-bordered" id="stockTable">
                     <thead>
                         <tr>
-                            <th class="text-center" onclick="sortTable(0)">Item Name</th>
+                            <th class="text-center">Item Name</th>
                             <th class="text-center">Description</th>
-                            <th class="text-center" onclick="sortTable(2)">Stocks</th>
+                            <th class="text-center">Stocks</th>
                             <th>Check-in Room</th>
                             <th>Check-in Location</th>
                         </tr>
@@ -162,52 +161,35 @@ document.getElementById("searchInput").addEventListener("keyup", function() {
         }
     }
 });
-
-// Sort Table Function
-function sortTable(n) {
-    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-    table = document.getElementById("stockTable");
-    switching = true;
-    dir = "asc";
-
-    while (switching) {
-        switching = false;
-        rows = table.rows;
-
-        for (i = 1; i < (rows.length - 1); i++) {
-            shouldSwitch = false;
-            x = rows[i].getElementsByTagName("TD")[n];
-            y = rows[i + 1].getElementsByTagName("TD")[n];
-
-            if (dir == "asc") {
-                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                    shouldSwitch = true;
-                    break;
-                }
-            } else if (dir == "desc") {
-                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                    shouldSwitch = true;
-                    break;
-                }
-            }
-        }
-
-        if (shouldSwitch) {
-            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-            switching = true;
-            switchcount++;
-        } else {
-            if (switchcount == 0 && dir == "asc") {
-                dir = "desc";
-                switching = true;
-            }
-        }
-    }
-}
 </script>
 
 <style>
   .pull-right {
     text-align: center;
+  }
+
+  /* Freeze the header */
+  #stockTable {
+      border-collapse: collapse;
+      width: 100%;
+  }
+
+  #stockTable thead {
+      position: sticky;
+      top: 0;
+      background-color: #f2f2f2;
+      z-index: 10;
+  }
+
+  /* Styling for the table when scrolling */
+  #stockTable th, #stockTable td {
+      text-align: center;
+      padding: 8px;
+  }
+
+  .table-responsive {
+      position: relative;
+      max-height: 400px;
+      overflow-y: auto;
   }
 </style>
