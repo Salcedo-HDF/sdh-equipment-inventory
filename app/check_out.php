@@ -45,6 +45,9 @@
     <div class="col-md-12">
       <div class="panel panel-default">
         <div class="panel-heading clearfix">
+         <div class="pull-right">
+            <a href="check_out_item.php" class="btn btn-primary">Check Out Items</a>
+         </div>
          <form action="check_out.php" method="GET" class="form-inline pull-left">
             <input type="text" name="search" class="form-control" placeholder="Search item..." value="<?php echo htmlspecialchars($search_query); ?>">
             <button type="submit" class="btn btn-primary">Search</button>
