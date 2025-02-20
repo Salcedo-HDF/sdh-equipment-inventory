@@ -40,6 +40,7 @@ $offset = ($current_page - 1) * $items_per_page;
     <div class="col-md-12">
         <?php echo display_msg($msg); ?>
     </div>
+    <h1><b>CHECK IN/OUT LOGS</b></h1>
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading clearfix">
@@ -58,7 +59,7 @@ $offset = ($current_page - 1) * $items_per_page;
                                 <th class="text-center"> Photo</th>
                                 <th class="text-center"> Item Name </th>
                                 <th class="text-center"> Description </th>
-                                <th class="text-center"> Person </th>
+                                <th class="text-center"> Recieve/Release </th>
                                 <th class="text-center"> Quantity </th>
                                 <th class="text-center"> Date Action </th>
                                 <th class="text-center"> Comments </th>
