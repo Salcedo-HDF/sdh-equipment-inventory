@@ -77,7 +77,7 @@ if (isset($_POST['check_in'])) {
         <div class="panel-heading">
           <strong>
             <span class="glyphicon glyphicon-th"></span>
-            <span>Check In Item</span>
+            <span>ADD NEW ITEM</span>
          </strong>
         </div>
         <div class="panel-body">

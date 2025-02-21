@@ -35,6 +35,9 @@
      <div class="col-md-12">
        <?php echo display_msg($msg); ?>
      </div>
+
+      <h1><b>ALL CHECKOUT ITEMS</b></h1>
+
     <div class="col-md-12">
       <div class="panel panel-default">
         <div class="panel-heading clearfix">

@@ -25,6 +25,8 @@ usort($all_products, function($a, $b) {
    </div>
 </div>
 
+<h1><b>DASHBOARD</b></h1>
+
 <div class="row">
     <a href="users.php" style="color:black;">
       <div class="col-md-4">
