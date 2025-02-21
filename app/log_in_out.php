@@ -30,6 +30,7 @@ $offset = ($current_page - 1) * $items_per_page;
     <div class="col-md-12">
         <?php echo display_msg($msg); ?>
     </div>
+    <h1><b>LOG IN/OUT LOGS</b></h1>
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading clearfix">
