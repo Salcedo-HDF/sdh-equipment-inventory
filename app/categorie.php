@@ -34,6 +34,9 @@
        <?php echo display_msg($msg); ?>
      </div>
   </div>
+
+  <h1><b>CATEGORIES</b></h1>
+
    <div class="row">
     <div class="col-md-5">
       <div class="panel panel-default">

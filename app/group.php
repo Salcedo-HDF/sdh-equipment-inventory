@@ -11,6 +11,9 @@
      <?php echo display_msg($msg); ?>
    </div>
 </div>
+
+<h1><b>GROUPS</b></h1>
+
 <div class="row">
   <div class="col-md-12">
     <div class="panel panel-default">
