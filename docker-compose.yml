@@ -12,6 +12,7 @@ services:
       - "8080:80"
     networks:
       - default
+    restart: unless-stopped
 
   db:
     image: mysql:8.0
@@ -26,6 +27,7 @@ services:
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - default
+    restart: unless-stopped
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
@@ -44,6 +46,7 @@ services:
       - db
     networks:
       - default
+    restart: unless-stopped
 
 volumes:
   db_data:
