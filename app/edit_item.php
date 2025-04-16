@@ -199,6 +199,10 @@ if(!$item){
                         <option value="Old Storage Next to Isolation Room" <?php if($item['where_found'] === 'Old Storage Next to Isolation Room'): echo "selected"; endif; ?>>Old Storage Next to Isolation Room</option>
                         <option value="Business Office" <?php if($item['where_found'] === "Business Office"): echo "selected"; endif; ?>>Business Office</option>
                         <option value="Chief of Hospital Office" <?php if($item['where_found'] === 'Chief of Hospital Office'): echo "selected"; endif; ?>>Chief of Hospital Office</option>
+                        <option value="Emergency Room" <?php if($item['where_found'] === 'Emergency Room'): echo "selected"; endif; ?>>Emergency Room</option>
+                        <option value="Parcel Delivered" <?php if($item['where_found'] === 'Parcel Delivered'): echo "selected"; endif; ?>>Parcel Delivered</option>
+                        <option value="OPD" <?php if($item['where_found'] === 'OPD'): echo "selected"; endif; ?>>OPD</option>
+                        <option value="Records Section" <?php if($item['where_found'] === 'Records Section'): echo "selected"; endif; ?>>Records Section</option>
                         <option value="2nd Floor" <?php if($item['where_found'] === '2nd Floor'): echo "selected"; endif; ?>>2nd Floor</option>
                         <option value="N/A" <?php if($item['where_found'] === 'N/A'): echo "selected"; endif; ?>>N/A</option>
                       </select>
