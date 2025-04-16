@@ -172,6 +172,10 @@ if (isset($_POST['check_in'])) {
                         <option value="Old Storage Next to Isolation Room">Old Storage Next to Isolation Room</option>
                         <option value="Business Office">Business Office</option>
                         <option value="Chief of Hospital Office">Chief of Hospital Office</option>
+                        <option value="Emergency Room">Emergency Room</option>
+                        <option value="Parcel Delivered">Parcel Delivered</option>
+                        <option value="OPD">OPD</option>
+                        <option value="Records Section">Records Section</option>
                         <option value="2nd Floor">2nd Floor</option>
                         <option value="N/A">N/A</option>
                       </select>
