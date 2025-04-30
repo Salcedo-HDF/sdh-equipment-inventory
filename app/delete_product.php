@@ -17,7 +17,7 @@ if (isset($_GET['id'])) {
     $result = $db->query($sql);
 
     if ($result) {
-        $session->mgit sg("s", "Item marked as deleted.");
+        $session->msg("s", "Item marked as deleted.");
     } else {
         $session->msg("d", "Failed to mark item as deleted.");
     }
